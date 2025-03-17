@@ -1,4 +1,3 @@
-import type { IGuiPainter } from "./IGuiPainter";
 import type { Vec2d } from "./Vec2d";
 
 export class GuiElement {
@@ -108,13 +107,5 @@ export class GuiElement {
     if (point.x > (pos.x + size.x)) return false;
     if (point.y > (pos.y + size.y)) return false;
     return true;
-  }
-
-  draw(painter: IGuiPainter) {
-    if (!this.isVisible()) return;
-
-    for (var child of this._children) {
-      child.draw(painter);
-    }
   }
 }
