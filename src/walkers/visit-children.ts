@@ -1,13 +1,13 @@
 import { Entity } from "../Entity";
 
-export interface EntityVisitor {
+export interface ChildrenVisitor {
   onVisit(entity: Entity): void;
   canEnter?(entity: Entity): boolean;
   onEnter?(entity: Entity): void;
   onLeave?(entity: Entity): void;
 }
 
-export function walkDepthFirst(entities: Entity[], visitor: EntityVisitor) {
+export function visitChildren(entities: Entity[], visitor: ChildrenVisitor) {
   const queue = entities.map(entity => createVisitNode(entity));
   while (queue.length) {
     const item = queue[0];

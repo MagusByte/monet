@@ -1,12 +1,12 @@
 import { beforeEach, expect, test, vi } from "vitest"
-import { walkBubble, type BubbleVisitor } from './walk-bubble';
+import { visitParent, type ParentVisitor } from './visit-parent';
 import { Entity } from "../Entity";
 
-type VisitCall = { method: keyof BubbleVisitor, entity: Entity };
-type SimpleVisitCall = { method: keyof BubbleVisitor, name?: string };
+type VisitCall = { method: keyof ParentVisitor, entity: Entity };
+type SimpleVisitCall = { method: keyof ParentVisitor, name?: string };
 
 let callOrder: VisitCall[] = [];
-let visitor: BubbleVisitor = {
+let visitor: ParentVisitor = {
   onVisit: vi.fn((entity) => {
     callOrder.push({ method: "onVisit", entity })
     return true;
@@ -38,7 +38,7 @@ beforeEach(() => {
 
 test("should only invoke the visit method once if no call order", () => {
   const entity = createEntity();
-  walkBubble(entity, visitor);
+  visitParent(entity, visitor);
   expect(visitor.onVisit).toHaveBeenCalledOnce();
 });
 
@@ -48,7 +48,7 @@ test("should visit each and every parent", () => {
   const child = createEntity("child", parent);
   const grandchild = createEntity("grandchild", child);
 
-  walkBubble(grandchild, visitor);
+  visitParent(grandchild, visitor);
 
   expect(getSimpleCallLog()).toEqual([
     { method: "onVisit", name: "grandchild" },
@@ -71,7 +71,7 @@ test("should visit each and every parent until visitor says stop", ()=>{
     }),
   };
 
-  walkBubble(grandchild, visitor);
+  visitParent(grandchild, visitor);
 
   expect(getSimpleCallLog()).toEqual([
     { method: "onVisit", name: "grandchild" },
@@ -89,7 +89,7 @@ test("should not visit neighbours", ()=>{
   const g1_p1_c1_gc1 = createEntity("g1_p1_c1_gc1", g1_p1_c1);
   const g1_p1_c1_gc2 = createEntity("g1_p1_c1_gc2", g1_p1_c1); 
 
-  walkBubble(g1_p1_c1_gc1, visitor);
+  visitParent(g1_p1_c1_gc1, visitor);
 
   expect(getSimpleCallLog()).toEqual([
     { method: "onVisit", name: "g1_p1_c1_gc1" },
@@ -105,7 +105,7 @@ test("should not children", ()=>{
   const child = createEntity("child", parent);
   const grandchild = createEntity("grandchild", child);
 
-  walkBubble(parent, visitor);
+  visitParent(parent, visitor);
 
   expect(getSimpleCallLog()).toEqual([
     { method: "onVisit", name: "parent" },

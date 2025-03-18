@@ -1,8 +1,8 @@
 import { beforeEach, expect, test, vi, MockInstance, describe } from "vitest"
-import { type EntityVisitor, walkDepthFirst } from './walk-depth-first';
+import { type ChildrenVisitor, visitChildren } from './visit-children';
 import { Entity } from "../Entity";
 
-let visitor: EntityVisitor;
+let visitor: ChildrenVisitor;
 let onVisitSpy: MockInstance;
 beforeEach(() => {
   visitor = {
@@ -13,13 +13,13 @@ beforeEach(() => {
 
 test("visitor.onVisit will not be called unless there are elements", () => {
   const entities: Entity[] = [];
-  walkDepthFirst(entities, visitor);
+  visitChildren(entities, visitor);
   expect(onVisitSpy).not.toHaveBeenCalled();
 });
 
 test("visitor.onVisit is called for each entity in initial array", () => {
   const entities: Entity[] = [new Entity(), new Entity()];
-  walkDepthFirst(entities, visitor);
+  visitChildren(entities, visitor);
   expect(onVisitSpy).toHaveBeenCalledTimes(2);
   expect(onVisitSpy).toHaveBeenCalledWith(entities[0]);
   expect(onVisitSpy).toHaveBeenCalledWith(entities[1]);
@@ -34,7 +34,7 @@ test("visitor is called for each entity in the graph", () => {
   grandchild.setParent(child);
 
   // Act
-  walkDepthFirst([parent], visitor);
+  visitChildren([parent], visitor);
 
   // Assert
   expect(onVisitSpy).toHaveBeenCalledTimes(3);
@@ -58,7 +58,7 @@ test("visitor.canEnter determines if children can be visited", () => {
   visitor.canEnter = (e) => e == parent;
 
   // Act
-  walkDepthFirst([parent], visitor);
+  visitChildren([parent], visitor);
 
   // Assert
   expect(onVisitSpy).toHaveBeenCalledTimes(3);
@@ -85,7 +85,7 @@ test("visitor.onEnter is only called for those it can enter", () => {
   visitor.onEnter = onEnterFake;
 
   // Act
-  walkDepthFirst([parent], visitor);
+  visitChildren([parent], visitor);
 
   // Assert
   expect(onEnterFake).toHaveBeenCalledTimes(1);
@@ -112,7 +112,7 @@ test("visitor.onLeave is only called for those it can enter", () => {
   visitor.onLeave = onLeaveFake;
 
   // Act
-  walkDepthFirst([parent], visitor);
+  visitChildren([parent], visitor);
 
   // Assert
   expect(onEnterFake).toHaveBeenCalledExactlyOnceWith(parent);
@@ -128,7 +128,7 @@ test("visitor.onEnter is only called if the entity has children", () => {
   visitor.onEnter = onEnterFake;
 
   // Act
-  walkDepthFirst([parent], visitor);
+  visitChildren([parent], visitor);
 
   // Assert
   expect(onEnterFake).toHaveBeenCalledTimes(0);
@@ -140,7 +140,7 @@ describe("Checking call order", () => {
   let child1 = new Entity();
   let child2 = new Entity();
   let grandchild = new Entity();
-  let callOrders: { entity: Entity, operation: (keyof EntityVisitor) }[] = [];
+  let callOrders: { entity: Entity, operation: (keyof ChildrenVisitor) }[] = [];
   beforeEach(() => {
     // Arrange
     parent = new Entity();
@@ -161,7 +161,7 @@ describe("Checking call order", () => {
     visitor.canEnter = (entity) => { callOrders.push({ entity, operation: "canEnter" }); return true };
 
     // Act
-    walkDepthFirst([parent, friend], visitor);
+    visitChildren([parent, friend], visitor);
   });
 
   test("Parent-only check", () => {
