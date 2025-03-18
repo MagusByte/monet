@@ -1,12 +1,48 @@
+
 import { Entity } from "../Entity";
 
+/**
+ * Interface representing a visitor for children entities.
+ */
 export interface ChildrenVisitor {
+  /**
+   * Called when an entity is visited.
+   * @param entity - The entity being visited.
+   */
   onVisit(entity: Entity): void;
+
+  /**
+   * Optional method to determine if the visitor can enter the entity.
+   * @param entity - The entity to check.
+   * @returns A boolean indicating if the visitor can enter the entity.
+   */
   canEnter?(entity: Entity): boolean;
+
+  /**
+   * Optional method called when entering an entity.
+   * @param entity - The entity being entered.
+   */
   onEnter?(entity: Entity): void;
+
+  /**
+   * Optional method called when leaving an entity.
+   * @param entity - The entity being left.
+   */
   onLeave?(entity: Entity): void;
 }
 
+/**
+ * Visits each entity and its children using a depth-first search approach.
+ * 
+ * @param entities - The list of root entities to start the visit from.
+ * @param visitor - The visitor object that defines the visit behavior.
+ * 
+ * The `visitor` object can have the following methods:
+ * - `onVisit(entity: Entity): void` - Called when an entity is visited.
+ * - `canEnter?(entity: Entity): boolean` - Optional. Determines if the children of the entity should be visited.
+ * - `onEnter?(entity: Entity): void` - Optional. Called when entering an entity's children.
+ * - `onLeave?(entity: Entity): void` - Optional. Called when leaving an entity's children.
+ */
 export function visitChildren(entities: Entity[], visitor: ChildrenVisitor) {
   const queue = entities.map(entity => createVisitNode(entity));
   while (queue.length) {
