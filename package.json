@@ -13,6 +13,7 @@
   "scripts": {
     "compile": "tsc",
     "test": "vitest",
+    "test:gui": "vitest --ui",
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
