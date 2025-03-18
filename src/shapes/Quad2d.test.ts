@@ -1,4 +1,4 @@
-import { vi, test, expect, describe, beforeEach } from 'vitest';
+import { test, expect, describe, beforeEach } from 'vitest';
 import { Quad2d } from './Quad2d';
 
 test('should create an instance with given coordinates', () => {
