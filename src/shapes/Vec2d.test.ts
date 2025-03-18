@@ -43,10 +43,16 @@ describe('Vec2d', () => {
   describe("Vec2d.getNormalized()", () => {
     test.each([
       [0, 0, 0, 0],
+      [9, 0, 1, 0],
+      [0, 9, 0, 1],
+      [1, 1, 0.7071, 0.7071],
+      [-1, -1, -0.7071, -0.7071],
+      [9, 9, 0.7071, 0.7071],
     ])("Vec2d(%i, %i).getNormalized() returns [%i, %i]", (x: number, y: number, nx: number, ny: number) => {
       const sut = new Vec2d(x, y);
       const n = sut.getNormalized();
-      expect(n).toEqual(new Vec2d(nx, ny));
+      expect(n.x).toBeCloseTo(nx, 3);
+      expect(n.y).toBeCloseTo(ny, 3);
     });
   })
 

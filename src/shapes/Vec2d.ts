@@ -12,6 +12,8 @@ export class Vec2d {
 
 
   getNormalized() {
-    return new Vec2d(this.x, this.y);
+    if(this.x == 0 && this.y == 0) return Vec2d.Zero;
+    const length = this.length;
+    return new Vec2d(this.x / length, this.y / length);
   }
 }
