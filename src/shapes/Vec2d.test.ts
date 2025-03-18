@@ -40,7 +40,7 @@ describe('Vec2d', () => {
     });
   });
 
-  describe("static methods", ()=>{
+  describe("static properties", ()=>{
     test("Vec2d.Zero", ()=>{
       expect(Vec2d.Zero).toEqual(new Vec2d(0, 0));
     })
