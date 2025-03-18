@@ -14,7 +14,7 @@ export class Line2d {
     const lengthSquared = dx * dx + dy * dy;
 
     if (lengthSquared === 0) {
-      return new Vec2d(0, 0); // Line is a point
+      return new Vec2d(this.x1, this.y1); // Line is a point
     }
 
     const t = ((x - this.x1) * dx + (y - this.y1) * dy) / lengthSquared;

@@ -54,7 +54,7 @@ describe("getClosestPoint", () => {
     expect(line.getClosestPoint(11, -10)).toEqual({ x: 10, y: 0 });
   });
 
-  test('should calculate the closest point on the line if it\'s point', () => {
+  test("should calculate the closest point on the line if it's point", () => {
     const line = new Line2d(50, 50, 50, 50);
     const x = Math.random() * 100;
     const y = Math.random() * 100;
