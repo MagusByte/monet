@@ -1,5 +1,6 @@
 import { vi, test, expect, describe } from 'vitest';
 import { Line2d } from './Line2d';
+import { Vec2d } from './Vec2d';
 
 test('should create an instance with given coordinates', () => {
   const line = new Line2d(1, 2, 3, 4);
@@ -64,7 +65,7 @@ describe("getClosestPoint", () => {
 describe("getDistanceFrom(...)", () => {
   test('should calculate the distance from the point', () => {
     const line = new Line2d(50, 50, 50, 50);
-    vi.spyOn(line, "getClosestPoint").mockReturnValue({ x: 0, y: 13 });
+    vi.spyOn(line, "getClosestPoint").mockReturnValue(new Vec2d(0, 13));
     expect(line.getDistanceFrom(0, 0)).toBe(13);
   });
 });
