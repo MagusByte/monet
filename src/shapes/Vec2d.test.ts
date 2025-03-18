@@ -40,8 +40,18 @@ describe('Vec2d', () => {
     });
   });
 
-  describe("static properties", ()=>{
-    test("Vec2d.Zero", ()=>{
+  describe("Vec2d.getNormalized()", () => {
+    test.each([
+      [0, 0, 0, 0],
+    ])("Vec2d(%i, %i).getNormalized() returns [%i, %i]", (x: number, y: number, nx: number, ny: number) => {
+      const sut = new Vec2d(x, y);
+      const n = sut.getNormalized();
+      expect(n).toEqual(new Vec2d(nx, ny));
+    });
+  })
+
+  describe("static properties", () => {
+    test("Vec2d.Zero", () => {
       expect(Vec2d.Zero).toEqual(new Vec2d(0, 0));
     })
   });
