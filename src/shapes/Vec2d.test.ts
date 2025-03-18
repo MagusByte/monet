@@ -8,6 +8,19 @@ describe('Vec2d', () => {
     expect(vec.y).toBe(4);
   });
 
+  test('should create a Vec2d instance with transparent object', () => {
+    const vec = new Vec2d({ x: 3, y: 4 });
+    expect(vec.x).toBe(3);
+    expect(vec.y).toBe(4);
+  });
+
+  test('should create a Vec2d instance with transparent object', () => {
+    const original = new Vec2d({ x: 3, y: 4 });
+    const vec = new Vec2d(original);
+    expect(vec.x).toBe(3);
+    expect(vec.y).toBe(4);
+  });
+
   test('should allow updating x and y values', () => {
     const vec = new Vec2d(1, 2);
     vec.x = 5;
@@ -59,7 +72,65 @@ describe('Vec2d', () => {
   describe("static properties", () => {
     test("Vec2d.Zero", () => {
       expect(Vec2d.Zero).toEqual(new Vec2d(0, 0));
-    })
+    });
+    test("Vec2d.One", () => {
+      expect(Vec2d.One).toEqual(new Vec2d(1, 1));
+    });
+  });
+
+  describe("add", ()=>{
+    test.each([
+      [0, 0, 0, 0, 0, 0],
+      [1, 2, 3, 4, 4, 6],
+      [1, 2, -3, -4, -2, -2],
+    ])("Vec2d.Add(Vec2d(%i, %i), Vec2d(%i, %i )) == Vec2d(%i, %i)", (x1, y1, x2, y2, rx, ry)=>{
+      const a = new Vec2d(x1, y1);
+      const b = new Vec2d(x2, y2);
+      const r = Vec2d.Add(a, b);
+      expect(r).toEqual(new Vec2d(rx, ry));
+    });
+  });
+
+  describe("substract", ()=>{
+    test.each([
+      [0, 0, 0, 0, 0, 0],
+      [1, 2, 3, 4, -2, -2],
+      [1, 2, -3, -4, 4, 6],
+    ])("Vec2d.Subtract(Vec2d(%i, %i), Vec2d(%i, %i )) == Vec2d(%i, %i)", (x1, y1, x2, y2, rx, ry)=>{
+      const a = new Vec2d(x1, y1);
+      const b = new Vec2d(x2, y2);
+      const r = Vec2d.Subtract(a, b);
+      expect(r).toEqual(new Vec2d(rx, ry));
+    });
+  });
+
+  describe("multiply", ()=>{
+    test.each([
+      [0, 0, 0, 0, 0, 0],
+      [1, 2, 0, 0, 0, 0],
+      [0, 0, 1, 2, 0, 0],
+      [1, 2, 3, 4, 3, 8],
+      [1, 2, -3, -4, -3, -8],
+    ])("Vec2d.Multiply(Vec2d(%i, %i), Vec2d(%i, %i )) == Vec2d(%i, %i)", (x1, y1, x2, y2, rx, ry)=>{
+      const a = new Vec2d(x1, y1);
+      const b = new Vec2d(x2, y2);
+      const r = Vec2d.Multiply(a, b);
+      expect(r).toEqual(new Vec2d(rx, ry));
+    });
+  });
+
+  describe("scale", ()=>{
+    test.each([
+      [0, 0, 0, 0, 0],
+      [1, 3, 0, 0, 0],
+      [1, 3, 1, 1, 3],
+      [1, 3, 3, 3, 9],
+      [1, 3, -3, -3, -9],
+    ])("Vec2d.Scale(Vec2d(%i, %i), %i) == Vec2d(%i, %i)", (x1, y1, s, rx, ry)=>{
+      const a = new Vec2d(x1, y1);
+      const r = Vec2d.Scale(a, s);
+      expect(r).toEqual(new Vec2d(rx, ry));
+    });
   });
 });
 
