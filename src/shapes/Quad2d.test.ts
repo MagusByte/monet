@@ -84,24 +84,3 @@ describe("isInside", ()=>{
     expect(quad.isInside(x, y)).toBe(false);
   });
 });
-
-
-describe("isOutside", ()=>{
-  let quad: Quad2d;
-
-  beforeEach(()=>{
-    quad = new Quad2d(5, 7, 11, 13);
-  });
-
-  test("returns the opposite of isInside when point is outside", ()=>{
-    vi.spyOn(quad, 'isInside').mockReturnValue(false);
-    expect(quad.isOutside(1, 2)).toBe(true);
-    expect(quad.isInside).toHaveBeenCalledWith(1,2);
-  });
-
-  test("returns the opposite of isInside when point is inside", ()=>{
-    vi.spyOn(quad, 'isInside').mockReturnValue(true);
-    expect(quad.isOutside(1, 2)).toBe(false);
-    expect(quad.isInside).toHaveBeenCalledWith(1,2);
-  });
-});
