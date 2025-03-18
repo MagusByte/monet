@@ -1,7 +1,6 @@
 import { beforeEach, expect, test, vi, MockInstance, describe } from "vitest"
-import { walkDepthFirst } from './depth-first';
+import { type EntityVisitor, walkDepthFirst } from './walk-depth-first';
 import { Entity } from "../Entity";
-import { EntityVisitor } from "../EntityVisitor";
 
 let visitor: EntityVisitor;
 let onVisitSpy: MockInstance;

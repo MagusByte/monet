@@ -1,5 +1,10 @@
 import { Entity } from "../Entity";
-import type { EntityVisitor } from "../EntityVisitor";
+export interface EntityVisitor {
+  onVisit(entity: Entity): void;
+  canEnter?(entity: Entity): boolean;
+  onEnter?(entity: Entity): void;
+  onLeave?(entity: Entity): void;
+}
 
 export function walkDepthFirst(entities: Entity[], visitor: EntityVisitor) {
   const queue = entities.map(entity => createVisitNode(entity));
