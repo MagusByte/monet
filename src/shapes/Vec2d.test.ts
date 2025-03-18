@@ -34,11 +34,16 @@ describe('Vec2d', () => {
       expect(sut.length).toBe(0);
     });
 
-
     test("should return length", () => {
-      const sut = new Vec2d(4, 4)
+      const sut = new Vec2d(0, 4)
       expect(sut.length).toBe(4);
     });
+  });
+
+  describe("static methods", ()=>{
+    test("Vec2d.Zero", ()=>{
+      expect(Vec2d.Zero).toEqual(new Vec2d(0, 0));
+    })
   });
 });
 
