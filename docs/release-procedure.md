@@ -9,4 +9,4 @@
    3. Update patch (`npm version patch`) (`1.2.3` -> `1.2.4`)
    4. Update patch (`npm version prerelease`) (`1.2.3` -> `1.2.3-0`)
 4. Push it
-5. Send to npm
+5. Send to npm (`npm publish --access public`)
