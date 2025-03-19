@@ -4,14 +4,23 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/main/index.js",
+  "typings": "dist/main/index.d.ts",
+  "module": "dist/module/index.js",
   "files": [
-    "/dist"
+    "/dist/main",
+    "/dist/module",  
+    "!**/*.spec.*",
+    "!**/*.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
-    "compile": "tsc",
+    "build": "run-p build:*",
+    "build:main": "tsc -p tsconfig.json --clean",
+    "build:module": "tsc -p tsconfig.module.json --clean",
+    "tsc": "tsc",
     "test": "vitest",
     "test:gui": "vitest --ui",
     "coverage": "vitest run --coverage"
@@ -19,7 +28,8 @@
   "devDependencies": {
     "@vitest/coverage-v8": "^3.0.8",
     "@vitest/ui": "^3.0.8",
-    "vitest": "^3.0.8",
-    "typescript": "^5.8.2"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
   }
 }

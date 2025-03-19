@@ -1,16 +1,20 @@
 {
   "compilerOptions": {
-    "module": "ES2022",
-    "target": "es2020", // set to the *lowest* target you support
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "declaration": true,
-    "sourceMap": true,
-    "declarationMap": true,
+    "module": "Node16",
+    "target": "es2017",
+    "outDir": "dist/main",
     "rootDir": "src",
-    "outDir": "dist"
+    "moduleResolution": "node16",
+    "declaration": true,
+    "inlineSourceMap": true,
+    "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "resolveJsonModule": true, 
+    "declarationMap": true,
+    "strict": true,
+    "lib": ["ES2017"]
   },
   "exclude": [
+    "node_modules/**",
     "dist/**",
     "**/*.test.ts"
   ]
