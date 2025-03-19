@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     coverage: {
       exclude:
-        [...configDefaults.coverage.exclude, "vitest.config.js", "**/index.ts"]
+        [...configDefaults.coverage.exclude!, "vitest.config.js", "**/index.ts"]
     }
   },
 })
