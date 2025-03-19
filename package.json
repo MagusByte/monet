@@ -1,6 +1,6 @@
 {
   "name": "@magusbyte/monet",
-  "version": "1.0.1-2",
+  "version": "1.0.1-3",
   "repository": "https://github.com/MagusByte/monet",
   "description": "An hierarchical Entity-Component-System intended to be used to create a GUIs",
   "license": "ISC",
@@ -9,7 +9,7 @@
   "module": "dist/module/index.js",
   "files": [
     "/dist/main",
-    "/dist/module",  
+    "/dist/module",
     "!**/*.spec.*",
     "!**/*.json",
     "CHANGELOG.md",
