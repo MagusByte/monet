@@ -2,7 +2,7 @@
 
 1. Ensure everything is commited
 2. Ensure everything is tested (`npm run test`)
-2. Ensure everything is tested (`npm run compile`)
+2. Ensure everything is build (`npm run build`)
 3. Bump the version
    1. Update patch (`npm version major`) (`1.2.3` -> `2.0.0`)
    2. Update patch (`npm version minor`) (`1.2.3` -> `1.3.0`)
