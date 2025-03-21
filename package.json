@@ -23,6 +23,7 @@
     "build:module": "tsc -p tsconfig.module.json",
     "tsc": "tsc",
     "test": "vitest",
+    "test:once": "vitest run",
     "test:gui": "vitest --ui",
     "coverage": "vitest run --coverage"
   },
