@@ -1,3 +1,4 @@
+/** @deprecated */
 export class OldEntity {
   private _parent: OldEntity | undefined;
   private _children: OldEntity[] = [];
