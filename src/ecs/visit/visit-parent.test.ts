@@ -1,8 +1,8 @@
 import { beforeEach, expect, test, vi } from "vitest"
 import { visitParent, type ParentVisitor } from './visit-parent';
-import { Entity } from "../Entity";
+import { OldEntity } from "../OldEntity";
 
-type VisitCall = { method: keyof ParentVisitor, entity: Entity };
+type VisitCall = { method: keyof ParentVisitor, entity: OldEntity };
 type SimpleVisitCall = { method: keyof ParentVisitor, name?: string };
 
 let callOrder: VisitCall[] = [];
@@ -20,8 +20,8 @@ function toSimpleCallLog(log: VisitCall[]) {
   return log.map((x): SimpleVisitCall => ({ method: x.method, name: x.entity.name }));
 }
 
-function createEntity(name?: string, parent?: Entity) {
-  const entity = new Entity(name);
+function createEntity(name?: string, parent?: OldEntity) {
+  const entity = new OldEntity(name);
   entity.setParent(parent);
   return entity;
 }

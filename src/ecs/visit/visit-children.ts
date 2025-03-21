@@ -1,5 +1,5 @@
 
-import { Entity } from "../Entity";
+import { OldEntity } from "../OldEntity";
 
 /**
  * Interface representing a visitor for children entities.
@@ -9,26 +9,26 @@ export interface ChildrenVisitor {
    * Called when an entity is visited.
    * @param entity - The entity being visited.
    */
-  onVisit(entity: Entity): void;
+  onVisit(entity: OldEntity): void;
 
   /**
    * Optional method to determine if the visitor can enter the entity.
    * @param entity - The entity to check.
    * @returns A boolean indicating if the visitor can enter the entity.
    */
-  canEnter?(entity: Entity): boolean;
+  canEnter?(entity: OldEntity): boolean;
 
   /**
    * Optional method called when entering an entity.
    * @param entity - The entity being entered.
    */
-  onEnter?(entity: Entity): void;
+  onEnter?(entity: OldEntity): void;
 
   /**
    * Optional method called when leaving an entity.
    * @param entity - The entity being left.
    */
-  onLeave?(entity: Entity): void;
+  onLeave?(entity: OldEntity): void;
 }
 
 /**
@@ -43,7 +43,7 @@ export interface ChildrenVisitor {
  * - `onEnter?(entity: Entity): void` - Optional. Called when entering an entity's children.
  * - `onLeave?(entity: Entity): void` - Optional. Called when leaving an entity's children.
  */
-export function visitChildren(entities: Entity[], visitor: ChildrenVisitor) {
+export function visitChildren(entities: OldEntity[], visitor: ChildrenVisitor) {
   const queue = entities.map(entity => createVisitNode(entity));
   while (queue.length) {
     const item = queue[0];
@@ -70,7 +70,7 @@ export function visitChildren(entities: Entity[], visitor: ChildrenVisitor) {
     }
   }
 
-  function createVisitNode(entity: Entity): { entity: Entity; visited: boolean; entered: boolean; } {
+  function createVisitNode(entity: OldEntity): { entity: OldEntity; visited: boolean; entered: boolean; } {
     return { entity: entity, visited: false, entered: false };
   }
 }

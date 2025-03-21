@@ -1,12 +1,9 @@
-import type { Component } from "./Component";
-
-export class Entity {
-  private _parent: Entity | undefined;
-  private _children: Entity[] = [];
-  private _components: Set<Component<unknown>> = new Set<Component<unknown>>();
+export class OldEntity {
+  private _parent: OldEntity | undefined;
+  private _children: OldEntity[] = [];
   constructor(public readonly name?: string){}
 
-  setParent(parent: Entity | undefined) {
+  setParent(parent: OldEntity | undefined) {
     // Check if new parent (or anyone else up in the hierarchy) is the current element
     let current = parent;
     while (current) {
@@ -38,12 +35,12 @@ export class Entity {
     return this._children;
   }
 
-  addChild(child: Entity) {
+  addChild(child: OldEntity) {
     // Skip if already have a parent child relationship
     if (child._parent == this) return;
 
     // Check if child is a parent (or grand-parent)
-    let current: Entity | undefined = this;
+    let current: OldEntity | undefined = this;
     while (current) {
       if (current == child) throw new Error("can't add self as child or grand-child");
       current = current._parent;
@@ -57,24 +54,8 @@ export class Entity {
     this._children.push(child);
   }
 
-  removeChild(child: Entity) {
+  removeChild(child: OldEntity) {
     this._children = this._children.filter(x => x != child);
     child._parent = undefined;
-  }
-
-  getComponents() {
-    return this._components;
-  }
-
-  attach<T>(component: Component<T>) {
-    if (this._components.has(component)) return;
-    this._components.add(component);
-    component.system.onAttach(this, component);
-  }
-
-  detach<T>(component: Component<T>) {
-    if (!this._components.has(component)) return;
-    this._components.delete(component);
-    component.system.onDetach(this, component);
   }
 }
