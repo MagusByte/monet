@@ -8,7 +8,7 @@ export interface IQueryNode<T> {
 }
 
 export class QueryNode<T> implements IQueryNode<T> {
-  private subject: GraphNode<T>;
+  private readonly subject: GraphNode<T>;
 
   constructor(subject: GraphNode<T>) {
     this.subject = subject;
