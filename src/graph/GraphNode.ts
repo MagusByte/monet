@@ -1,3 +1,5 @@
+import { query } from './query';
+
 export class GraphNode<T> {
   public parent: GraphNode<T> | undefined = undefined;
   public firstChild: GraphNode<T> | undefined = undefined;
@@ -23,7 +25,7 @@ export function addChild<T>(
   newChild: GraphNode<T>,
   beforeChild?: GraphNode<T>
 ): void {
-  if (newChild === parent || isAncestor(parent, newChild)) {
+  if (newChild === parent || query(newChild).isAncestorOf(parent)) {
     throw new Error("Cannot add a node as a child of itself or its ancestor.");
   }
 
