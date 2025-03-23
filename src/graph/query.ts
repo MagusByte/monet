@@ -4,6 +4,7 @@ export interface IQueryNode<T> {
   isAncestorOf(node: GraphNode<T>): boolean;
   getChildren(): Generator<GraphNode<T>>;
   isParentOf(child: GraphNode<T>): boolean;
+  isChildOf(child: GraphNode<T>): boolean;
 }
 
 export class QueryNode<T> implements IQueryNode<T> {
@@ -26,6 +27,10 @@ export class QueryNode<T> implements IQueryNode<T> {
 
   isParentOf(child: GraphNode<T>): boolean {
     return child.parent === this.subject;
+  }
+
+  isChildOf(parent: GraphNode<T>): boolean {
+    return this.subject.parent === parent;
   }
 
   *getChildren(): Generator<GraphNode<T>> {
