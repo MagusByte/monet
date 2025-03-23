@@ -1,4 +1,4 @@
-import { GraphNode } from '../ecs/GraphNode';
+import { GraphNode } from './GraphNode';
 
 export interface QueryNode<T> {
   isAncestorOf(node: GraphNode<T>): boolean;

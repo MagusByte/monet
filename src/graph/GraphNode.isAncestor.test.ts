@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { GraphNode } from '../ecs/GraphNode';
+import { GraphNode } from './GraphNode';
 import { query } from './query';
 
 describe("query.isAncestorOf", () => {
@@ -18,7 +18,7 @@ describe("query.isAncestorOf", () => {
     const child = new GraphNode(1);
     const parent = new GraphNode(2);
     child.parent = parent;
-    parent.children.push(child);
+    parent.firstChild = child;
     expect(query(parent).isAncestorOf(child)).toBe(true);
   });
 
@@ -26,7 +26,7 @@ describe("query.isAncestorOf", () => {
     const child = new GraphNode(1);
     const parent = new GraphNode(2);
     child.parent = parent;
-    parent.children.push(child);
+    parent.firstChild = child;
     expect(query(child).isAncestorOf(parent)).toBe(false);
   });
 
@@ -36,8 +36,8 @@ describe("query.isAncestorOf", () => {
     const parent = new GraphNode(3);
     grandchild.parent = child;
     child.parent = parent;
-    parent.children.push(child);
-    child.children.push(grandchild);
+    parent.firstChild = child;
+    child.firstChild = grandchild;
     expect(query(parent).isAncestorOf(grandchild)).toBe(true);
   });
 
@@ -47,8 +47,8 @@ describe("query.isAncestorOf", () => {
     const parent = new GraphNode(3);
     grandchild.parent = child;
     child.parent = parent;
-    parent.children.push(child);
-    child.children.push(grandchild);
+    parent.firstChild = child;
+    child.firstChild = grandchild;
     expect(query(grandchild).isAncestorOf(parent)).toBe(false);
   });
 
@@ -61,8 +61,9 @@ describe("query.isAncestorOf", () => {
     grandchild1.parent = child;
     grandchild2.parent = child;
     child.parent = parent;
-    parent.children.push(child);
-    child.children.push(grandchild1, grandchild2);
+    parent.firstChild = child;
+    child.firstChild = grandchild1
+    grandchild1.nextSibling = grandchild2;
 
     expect(query(parent).isAncestorOf(grandchild2)).toBe(true);
   });
