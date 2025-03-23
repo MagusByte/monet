@@ -27,17 +27,12 @@ export function addChild<T>(
     throw new Error("Cannot add a node as a child of itself or its ancestor.");
   }
 
-  if (newChild.parent === parent) {
-    throw new Error("The newChild is already a child of this parent.");
+  if (newChild.parent) {
+    throw new Error("The newChild already has a parent.");
   }
 
   if (beforeChild && beforeChild.parent !== parent) {
     throw new Error("The beforeChild is not a child of this parent.");
-  }
-
-  // Remove newChild from its current parent if it has one
-  if (newChild.parent) {
-    removeChild(newChild.parent, newChild);
   }
 
   newChild.parent = parent;
@@ -73,22 +68,4 @@ function isAncestor<T>(node: GraphNode<T>, potentialAncestor: GraphNode<T>): boo
     current = current.parent;
   }
   return false;
-}
-
-function removeChild<T>(parent: GraphNode<T>, child: GraphNode<T>): void {
-  if (child.previousSibling) {
-    child.previousSibling.nextSibling = child.nextSibling;
-  } else {
-    parent.firstChild = child.nextSibling;
-  }
-
-  if (child.nextSibling) {
-    child.nextSibling.previousSibling = child.previousSibling;
-  } else {
-    parent.lastChild = child.previousSibling;
-  }
-
-  child.parent = undefined;
-  child.previousSibling = undefined;
-  child.nextSibling = undefined;
 }
