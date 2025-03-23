@@ -5,7 +5,7 @@ export interface IQueryNode<T> {
   isAncestorOf(descendent: GraphNode<T>): boolean;
 
   isChildOf(parent: GraphNode<T>): boolean;
-  isDescendentOf(ancestor: GraphNode<T>): boolean; // Added method
+  isDescendentOf(ancestor: GraphNode<T>): boolean;
 
   getChildren(): Generator<GraphNode<T>>;
   getAncestors(): Generator<GraphNode<T>>;
