@@ -1,19 +1,77 @@
 import { GraphNode } from './GraphNode';
 
+/**
+ * Represents a query node in a graph structure, providing methods to traverse
+ * and query relationships between nodes such as parent, child, ancestor, and descendant.
+ *
+ * @template T - The type of data stored in the graph nodes.
+ */
 export interface IQueryNode<T> {
-  isParentOf(child: GraphNode<T>): boolean;
+  /**
+   * Determines if the current node is an ancestor of the specified descendant node.
+   *
+   * @param descendent - The node to check against.
+   * @returns `true` if the current node is an ancestor of the specified node, otherwise `false`.
+   */
   isAncestorOf(descendent: GraphNode<T>): boolean;
 
+  /**
+   * Determines if the current node is the parent of the specified child node.
+   *
+   * @param child - The node to check against.
+   * @returns `true` if the current node is the parent of the specified node, otherwise `false`.
+   */
+  isParentOf(child: GraphNode<T>): boolean;
+
+  /**
+   * Determines if the current node is a child of the specified parent node.
+   *
+   * @param parent - The node to check against.
+   * @returns `true` if the current node is a child of the specified node, otherwise `false`.
+   */
   isChildOf(parent: GraphNode<T>): boolean;
+
+  /**
+   * Determines if the current node is a descendant of the specified ancestor node.
+   *
+   * @param ancestor - The node to check against.
+   * @returns `true` if the current node is a descendant of the specified node, otherwise `false`.
+   */
   isDescendentOf(ancestor: GraphNode<T>): boolean;
 
+  /**
+   * Retrieves all children of the current node.
+   *
+   * @yields Each child node of the current node.
+   */
   getChildren(): Generator<GraphNode<T>>;
+
+  /**
+   * Retrieves all ancestors of the current node, starting from the immediate parent
+   * and moving up the hierarchy.
+   *
+   * @yields Each ancestor node of the current node.
+   */
   getAncestors(): Generator<GraphNode<T>>;
+
+  /**
+   * Retrieves the parent of the current node.
+   *
+   * @returns The parent node if it exists, otherwise `undefined`.
+   */
   getParent(): GraphNode<T> | undefined;
+
+  /**
+   * Retrieves all descendants of the current node in the specified traversal order.
+   *
+   * @param order - The traversal order, either "breadth-first" or "depth-first".
+   *                Defaults to "depth-first".
+   * @yields Each descendant node of the current node in the specified order.
+   */
   getDescendents(order?: "breadth-first" | "depth-first"): Generator<GraphNode<T>>;
 }
 
-export class QueryNode<T> implements IQueryNode<T> {
+class QueryNode<T> implements IQueryNode<T> {
   private readonly subject: GraphNode<T>;
 
   constructor(subject: GraphNode<T>) {
