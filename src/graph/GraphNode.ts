@@ -10,43 +10,53 @@ export class GraphNode<T> {
   constructor(public readonly value: T) { }
 }
 
-export function addChild<T>(
-  parent: GraphNode<T>,
-  newChild: GraphNode<T>,
-  beforeChild?: GraphNode<T>
-): void {
-  if (newChild === parent || query(newChild).isAncestorOf(parent)) {
-    throw new Error("Cannot add a node as a child of itself or its ancestor.");
-  }
+export interface IModifyNode<T>{
+  addChild(newChild: GraphNode<T>, beforeChild?: GraphNode<T>): void;
+}
 
-  if (newChild.parent) {
-    throw new Error("The newChild already has a parent.");
-  }
+export class ModifyNode<T> implements IModifyNode<T>{
+  constructor(private node: GraphNode<T>) {}
 
-  if (beforeChild && beforeChild.parent !== parent) {
-    throw new Error("The beforeChild is not a child of this parent.");
-  }
+  addChild(newChild: GraphNode<T>, beforeChild?: GraphNode<T>): void {
+    const parent = this.node;
 
-  newChild.parent = parent;
-
-  if (!beforeChild) {
-    // Add to the end
-    if (!parent.lastChild) {
-      parent.firstChild = parent.lastChild = newChild;
-    } else {
-      parent.lastChild.nextSibling = newChild;
-      newChild.previousSibling = parent.lastChild;
-      parent.lastChild = newChild;
+    if (newChild === parent || query(newChild).isAncestorOf(parent)) {
+      throw new Error("Cannot add a node as a child of itself or its ancestor.");
     }
-  } else {
-    // Insert before beforeChild
-    if (beforeChild.previousSibling) {
-      beforeChild.previousSibling.nextSibling = newChild;
-      newChild.previousSibling = beforeChild.previousSibling;
-    } else {
-      parent.firstChild = newChild;
+
+    if (newChild.parent) {
+      throw new Error("The newChild already has a parent.");
     }
-    newChild.nextSibling = beforeChild;
-    beforeChild.previousSibling = newChild;
+
+    if (beforeChild && beforeChild.parent !== parent) {
+      throw new Error("The beforeChild is not a child of this parent.");
+    }
+
+    newChild.parent = parent;
+
+    if (!beforeChild) {
+      // Add to the end
+      if (!parent.lastChild) {
+        parent.firstChild = parent.lastChild = newChild;
+      } else {
+        parent.lastChild.nextSibling = newChild;
+        newChild.previousSibling = parent.lastChild;
+        parent.lastChild = newChild;
+      }
+    } else {
+      // Insert before beforeChild
+      if (beforeChild.previousSibling) {
+        beforeChild.previousSibling.nextSibling = newChild;
+        newChild.previousSibling = beforeChild.previousSibling;
+      } else {
+        parent.firstChild = newChild;
+      }
+      newChild.nextSibling = beforeChild;
+      beforeChild.previousSibling = newChild;
+    }
   }
+}
+
+export function modify<T>(node: GraphNode<T>): IModifyNode<T> {
+  return new ModifyNode<T>(node);
 }
