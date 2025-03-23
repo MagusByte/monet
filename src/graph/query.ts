@@ -1,11 +1,13 @@
 import { GraphNode } from './GraphNode';
 
 export interface IQueryNode<T> {
-  isAncestorOf(node: GraphNode<T>): boolean;
-  getChildren(): Generator<GraphNode<T>>;
   isParentOf(child: GraphNode<T>): boolean;
+  isAncestorOf(descendent: GraphNode<T>): boolean;
+
   isChildOf(parent: GraphNode<T>): boolean;
   isDescendentOf(ancestor: GraphNode<T>): boolean; // Added method
+
+  getChildren(): Generator<GraphNode<T>>;
   getAncestors(): Generator<GraphNode<T>>;
 }
 
@@ -16,8 +18,8 @@ export class QueryNode<T> implements IQueryNode<T> {
     this.subject = subject;
   }
 
-  isAncestorOf(node: GraphNode<T>): boolean {
-    let current = node.parent;
+  isAncestorOf(descendent: GraphNode<T>): boolean {
+    let current = descendent.parent;
     while (current) {
       if (current === this.subject) {
         return true;
