@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { GraphNode, modify } from './GraphNode';
+import { GraphNode } from './GraphNode';
+import { modify } from './modify';
 
 describe("addChild", () => {
   test("adds a child at the end if beforeChild is undefined", () => {
