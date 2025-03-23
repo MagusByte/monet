@@ -2,7 +2,7 @@ import { GraphNode } from './GraphNode';
 
 export interface QueryNode<T> {
   isAncestorOf(node: GraphNode<T>): boolean;
-  getChildren(): GraphNode<T>[];
+  getChildren(): Generator<GraphNode<T>>;
 }
 
 export function query<T>(subject: GraphNode<T>): QueryNode<T> {
@@ -17,14 +17,12 @@ export function query<T>(subject: GraphNode<T>): QueryNode<T> {
       }
       return false;
     },
-    getChildren(): GraphNode<T>[] {
-      const children: GraphNode<T>[] = [];
+    *getChildren(): Generator<GraphNode<T>> {
       let current = subject.firstChild;
       while (current) {
-        children.push(current);
+        yield current;
         current = current.nextSibling;
       }
-      return children;
     },
   };
 }
