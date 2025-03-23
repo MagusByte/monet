@@ -10,16 +10,6 @@ export class GraphNode<T> {
   constructor(public readonly value: T) { }
 }
 
-export function getChildren<T>(node: GraphNode<T>): GraphNode<T>[] {
-  const children: GraphNode<T>[] = [];
-  let current = node.firstChild;
-  while (current) {
-    children.push(current);
-    current = current.nextSibling;
-  }
-  return children;
-}
-
 export function addChild<T>(
   parent: GraphNode<T>,
   newChild: GraphNode<T>,

@@ -1,10 +1,11 @@
 import { describe, test, expect } from 'vitest';
-import { GraphNode, getChildren } from './GraphNode';
+import { GraphNode } from './GraphNode';
+import { query } from './query';
 
-describe("getChildren", () => {
+describe("query.getChildren", () => {
   test("returns an empty array for a node with no children", () => {
     const sut = new GraphNode(1);
-    expect(getChildren(sut)).toEqual([]);
+    expect(query(sut).getChildren()).toEqual([]);
   });
 
   test("returns all children in the correct order", () => {
@@ -17,6 +18,6 @@ describe("getChildren", () => {
     child1.nextSibling = child2;
     child2.nextSibling = child3;
 
-    expect(getChildren(parent)).toEqual([child1, child2, child3]);
+    expect(query(parent).getChildren()).toEqual([child1, child2, child3]);
   });
 });
