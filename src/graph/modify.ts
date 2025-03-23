@@ -1,13 +1,41 @@
 import { GraphNode } from './GraphNode';
 import { query } from './query';
 
+/**
+ * Creates a new instance of `ModifyNode` to modify the given graph node.
+ *
+ * @template T - The type of the value contained in the graph node.
+ * @param node - The graph node to be modified.
+ * @returns An instance of `IModifyNode<T>` that allows modifications to the graph node.
+ */
+export function modify<T>(node: GraphNode<T>): IModifyNode<T> {
+  return new ModifyNode<T>(node);
+}
+
+/**
+ * Interface representing the ability to modify a node in a graph structure.
+ * Provides methods to add and remove child nodes.
+ *
+ * @typeParam T - The type of the value contained in the graph node.
+ */
 export interface IModifyNode<T> {
+  /**
+   * Adds a new child node to the current node.
+   *
+   * @param newChild - The new child node to be added.
+   */
   addChild(newChild: GraphNode<T>): void;
+
+  /**
+   * Removes an existing child node from the current node.
+   *
+   * @param child - The child node to be removed.
+   */
   removeChild(child: GraphNode<T>): void;
 }
 
-export class ModifyNode<T> implements IModifyNode<T> {
-  constructor(private node: GraphNode<T>) {}
+class ModifyNode<T> implements IModifyNode<T> {
+  constructor(private node: GraphNode<T>) { }
 
   addChild(newChild: GraphNode<T>): void {
     const parent = this.node;
@@ -57,8 +85,4 @@ export class ModifyNode<T> implements IModifyNode<T> {
     child.previousSibling = undefined;
     child.nextSibling = undefined;
   }
-}
-
-export function modify<T>(node: GraphNode<T>): IModifyNode<T> {
-  return new ModifyNode<T>(node);
 }
