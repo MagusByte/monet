@@ -78,10 +78,11 @@ export class QueryNode<T> implements IQueryNode<T> {
       while (current || stack.length > 0) {
         if (current) {
           yield current;
-          stack.push(current.nextSibling);
+          if(current.nextSibling)
+            stack.push(current.nextSibling);
           current = current.firstChild;
         } else {
-          current = stack.pop() || undefined;
+          current = stack.pop();
         }
       }
     } else if (order === "breadth-first") {

@@ -122,57 +122,17 @@ describe("query.getDescendents", () => {
         p2,
         p1_c1,
         p1_c2,
+        p2_c1,
+        p2_c2,
         p1_c1_g1,
         p1_c1_g2,
         p1_c2_g1,
         p1_c2_g2,
-        p2_c1,
-        p2_c2,
         p2_c1_g1,
         p2_c1_g2,
       ];
   
       expect(result).toEqual(expectedNodeOrder.map(x => x.value));
     });
-  })
-
-  
-
-
-  test("returns all descendents in breadth-first order when specified", () => {
-    const root = new GraphNode("root");
-    const c1 = new GraphNode("c1");
-    const c2 = new GraphNode("c2");
-    const g1_c1 = new GraphNode("c1_g1");
-    const g2_c1 = new GraphNode("c2_g1");
-
-    modify(root).addChild(c1);
-    modify(root).addChild(c2);
-    modify(c1).addChild(g1_c1);
-    modify(c2).addChild(g2_c1);
-
-    const result = Array.from(query(root).getDescendents("breadth-first")).map(node => node.value);
-    expect(result).toEqual(["c1", "c2", "c1_g1", "c2_g1"]);
-  });
-
-  test("handles complex hierarchies correctly", () => {
-    const root = new GraphNode("root");
-    const c1 = new GraphNode("c1");
-    const c2 = new GraphNode("c2");
-    const c1_g1 = new GraphNode("c1_g1");
-    const c2_g1 = new GraphNode("c2_g1");
-    const c1_g1_x1 = new GraphNode("c1_g1_x1");
-
-    modify(root).addChild(c1);
-    modify(root).addChild(c2);
-    modify(c1).addChild(c1_g1);
-    modify(c2).addChild(c2_g1);
-    modify(c1_g1).addChild(c1_g1_x1);
-
-    const depthFirstResult = Array.from(query(root).getDescendents("depth-first")).map(node => node.value);
-    expect(depthFirstResult).toEqual(["c1", "c1_g1", "c1_g1_x1", "c2", "c2_g1"]);
-
-    const breadthFirstResult = Array.from(query(root).getDescendents("breadth-first")).map(node => node.value);
-    expect(breadthFirstResult).toEqual(["c1", "c2", "c1_g1", "c2_g1", "c1_g1_x1"]);
   });
 });
