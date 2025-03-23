@@ -1,12 +1,12 @@
 import { describe, test, expect } from 'vitest';
-import { GraphNode } from './GraphNode';
+import { TreeNode } from './TreeNode';
 import { query } from './query';
 
 describe("query.getAncestors", () => {
   test('getAncestors should yield all ancestors of the node in order', () => {
-    const parent = new GraphNode('root');
-    const child = new GraphNode('child1');
-    const grandChild = new GraphNode('child2');
+    const parent = new TreeNode('root');
+    const child = new TreeNode('child1');
+    const grandChild = new TreeNode('child2');
 
     child.parent = parent;
     grandChild.parent = child;
@@ -18,7 +18,7 @@ describe("query.getAncestors", () => {
   });
 
   test('getAncestors should yield no ancestors if the node has no parent', () => {
-    const root = new GraphNode('root');
+    const root = new TreeNode('root');
     expect(Array.from(query(root).getAncestors())).toEqual([]);
   });
 });

@@ -1,4 +1,4 @@
-import { GraphNode } from './GraphNode';
+import { TreeNode } from './TreeNode';
 
 /**
  * Creates a query node for the given graph node.
@@ -7,7 +7,7 @@ import { GraphNode } from './GraphNode';
  * @param subject - The graph node to query.
  * @returns An instance of `IQueryNode<T>` that allows querying operations on the graph node.
  */
-export function query<T>(subject: GraphNode<T>): IQueryNode<T> {
+export function query<T>(subject: TreeNode<T>): IQueryNode<T> {
   return new QueryNode(subject);
 }
 
@@ -24,7 +24,7 @@ export interface IQueryNode<T> {
    * @param descendent - The node to check against.
    * @returns `true` if the current node is an ancestor of the specified node, otherwise `false`.
    */
-  isAncestorOf(descendent: GraphNode<T>): boolean;
+  isAncestorOf(descendent: TreeNode<T>): boolean;
 
   /**
    * Determines if the current node is the parent of the specified child node.
@@ -32,7 +32,7 @@ export interface IQueryNode<T> {
    * @param child - The node to check against.
    * @returns `true` if the current node is the parent of the specified node, otherwise `false`.
    */
-  isParentOf(child: GraphNode<T>): boolean;
+  isParentOf(child: TreeNode<T>): boolean;
 
   /**
    * Determines if the current node is a child of the specified parent node.
@@ -40,7 +40,7 @@ export interface IQueryNode<T> {
    * @param parent - The node to check against.
    * @returns `true` if the current node is a child of the specified node, otherwise `false`.
    */
-  isChildOf(parent: GraphNode<T>): boolean;
+  isChildOf(parent: TreeNode<T>): boolean;
 
   /**
    * Determines if the current node is a descendant of the specified ancestor node.
@@ -48,14 +48,14 @@ export interface IQueryNode<T> {
    * @param ancestor - The node to check against.
    * @returns `true` if the current node is a descendant of the specified node, otherwise `false`.
    */
-  isDescendentOf(ancestor: GraphNode<T>): boolean;
+  isDescendentOf(ancestor: TreeNode<T>): boolean;
 
   /**
    * Retrieves all children of the current node.
    *
    * @yields Each child node of the current node.
    */
-  getChildren(): Generator<GraphNode<T>>;
+  getChildren(): Generator<TreeNode<T>>;
 
   /**
    * Retrieves all ancestors of the current node, starting from the immediate parent
@@ -63,14 +63,14 @@ export interface IQueryNode<T> {
    *
    * @yields Each ancestor node of the current node.
    */
-  getAncestors(): Generator<GraphNode<T>>;
+  getAncestors(): Generator<TreeNode<T>>;
 
   /**
    * Retrieves the parent of the current node.
    *
    * @returns The parent node if it exists, otherwise `undefined`.
    */
-  getParent(): GraphNode<T> | undefined;
+  getParent(): TreeNode<T> | undefined;
 
   /**
    * Retrieves all descendants of the current node in the specified traversal order.
@@ -79,17 +79,17 @@ export interface IQueryNode<T> {
    *                Defaults to "depth-first".
    * @yields Each descendant node of the current node in the specified order.
    */
-  getDescendents(order?: "breadth-first" | "depth-first"): Generator<GraphNode<T>>;
+  getDescendents(order?: "breadth-first" | "depth-first"): Generator<TreeNode<T>>;
 }
 
 class QueryNode<T> implements IQueryNode<T> {
-  private readonly subject: GraphNode<T>;
+  private readonly subject: TreeNode<T>;
 
-  constructor(subject: GraphNode<T>) {
+  constructor(subject: TreeNode<T>) {
     this.subject = subject;
   }
 
-  isAncestorOf(descendent: GraphNode<T>): boolean {
+  isAncestorOf(descendent: TreeNode<T>): boolean {
     let current = descendent.parent;
     while (current) {
       if (current === this.subject) {
@@ -100,15 +100,15 @@ class QueryNode<T> implements IQueryNode<T> {
     return false;
   }
 
-  isParentOf(child: GraphNode<T>): boolean {
+  isParentOf(child: TreeNode<T>): boolean {
     return child.parent === this.subject;
   }
 
-  isChildOf(parent: GraphNode<T>): boolean {
+  isChildOf(parent: TreeNode<T>): boolean {
     return this.subject.parent === parent;
   }
 
-  isDescendentOf(ancestor: GraphNode<T>): boolean {
+  isDescendentOf(ancestor: TreeNode<T>): boolean {
     let current = this.subject.parent;
     while (current) {
       if (current === ancestor) {
@@ -119,7 +119,7 @@ class QueryNode<T> implements IQueryNode<T> {
     return false;
   }
 
-  *getChildren(): Generator<GraphNode<T>> {
+  *getChildren(): Generator<TreeNode<T>> {
     let current = this.subject.firstChild;
     while (current) {
       yield current;
@@ -127,7 +127,7 @@ class QueryNode<T> implements IQueryNode<T> {
     }
   }
 
-  *getAncestors(): Generator<GraphNode<T>> {
+  *getAncestors(): Generator<TreeNode<T>> {
     let current = this.subject.parent;
     while (current) {
       yield current;
@@ -135,13 +135,13 @@ class QueryNode<T> implements IQueryNode<T> {
     }
   }
 
-  getParent(): GraphNode<T> | undefined {
+  getParent(): TreeNode<T> | undefined {
     return this.subject.parent;
   }
 
-  *getDescendents(order: "breadth-first" | "depth-first" = "depth-first"): Generator<GraphNode<T>> {
+  *getDescendents(order: "breadth-first" | "depth-first" = "depth-first"): Generator<TreeNode<T>> {
     if (order === "depth-first") {
-      const stack: GraphNode<T>[] = [];
+      const stack: TreeNode<T>[] = [];
       let current = this.subject.firstChild;
 
       while (current || stack.length > 0) {
@@ -155,7 +155,7 @@ class QueryNode<T> implements IQueryNode<T> {
         }
       }
     } else if (order === "breadth-first") {
-      const queue: GraphNode<T>[] = [];
+      const queue: TreeNode<T>[] = [];
       let current = this.subject.firstChild;
 
       while (current) {

@@ -1,19 +1,19 @@
 import { describe, test, expect } from 'vitest';
-import { GraphNode } from './GraphNode';
+import { TreeNode } from './TreeNode';
 import { query } from './query';
 
 describe("query.getChildren", () => {
   test("returns an empty generator for a node with no children", () => {
-    const sut = new GraphNode(1);
+    const sut = new TreeNode(1);
     const result = Array.from(query(sut).getChildren());
     expect(result).toEqual([]);
   });
 
   test("yields all children in the correct order", () => {
-    const parent = new GraphNode(1);
-    const child1 = new GraphNode(2);
-    const child2 = new GraphNode(3);
-    const child3 = new GraphNode(3);
+    const parent = new TreeNode(1);
+    const child1 = new TreeNode(2);
+    const child2 = new TreeNode(3);
+    const child3 = new TreeNode(3);
 
     parent.firstChild = child1;
     child1.nextSibling = child2;

@@ -1,4 +1,4 @@
-import { GraphNode } from './GraphNode';
+import { TreeNode } from './TreeNode';
 import { query } from './query';
 
 /**
@@ -8,7 +8,7 @@ import { query } from './query';
  * @param node - The graph node to be modified.
  * @returns An instance of `IModifyNode<T>` that allows modifications to the graph node.
  */
-export function modify<T>(node: GraphNode<T>): IModifyNode<T> {
+export function modify<T>(node: TreeNode<T>): IModifyNode<T> {
   return new ModifyNode<T>(node);
 }
 
@@ -24,20 +24,20 @@ export interface IModifyNode<T> {
    *
    * @param newChild - The new child node to be added.
    */
-  addChild(newChild: GraphNode<T>): void;
+  addChild(newChild: TreeNode<T>): void;
 
   /**
    * Removes an existing child node from the current node.
    *
    * @param child - The child node to be removed.
    */
-  removeChild(child: GraphNode<T>): void;
+  removeChild(child: TreeNode<T>): void;
 }
 
 class ModifyNode<T> implements IModifyNode<T> {
-  constructor(private node: GraphNode<T>) { }
+  constructor(private node: TreeNode<T>) { }
 
-  addChild(newChild: GraphNode<T>): void {
+  addChild(newChild: TreeNode<T>): void {
     const parent = this.node;
 
     if (newChild === parent || query(newChild).isAncestorOf(parent)) {
@@ -60,7 +60,7 @@ class ModifyNode<T> implements IModifyNode<T> {
     }
   }
 
-  removeChild(child: GraphNode<T>): void {
+  removeChild(child: TreeNode<T>): void {
     const parent = this.node;
 
     if (child.parent !== parent) {

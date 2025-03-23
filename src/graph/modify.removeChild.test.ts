@@ -1,12 +1,12 @@
 import { describe, test, expect } from 'vitest';
-import { GraphNode } from './GraphNode';
+import { TreeNode } from './TreeNode';
 import { modify } from './modify';
 
 describe('ModifyNode.removeChild', () => {
   test('should remove first child correctly', () => {
-    const parent = new GraphNode<string>('parent');
-    const child1 = new GraphNode<string>('child1');
-    const child2 = new GraphNode<string>('child2');
+    const parent = new TreeNode<string>('parent');
+    const child1 = new TreeNode<string>('child1');
+    const child2 = new TreeNode<string>('child2');
 
     const modifier = modify(parent);
     modifier.addChild(child1);
@@ -24,9 +24,9 @@ describe('ModifyNode.removeChild', () => {
   });
 
   test('should remove last child correctly', () => {
-    const parent = new GraphNode<string>('parent');
-    const child1 = new GraphNode<string>('child1');
-    const child2 = new GraphNode<string>('child2');
+    const parent = new TreeNode<string>('parent');
+    const child1 = new TreeNode<string>('child1');
+    const child2 = new TreeNode<string>('child2');
 
     const modifier = modify(parent);
     modifier.addChild(child1);
@@ -44,10 +44,10 @@ describe('ModifyNode.removeChild', () => {
   });
 
   test('should remove a child node correctly (triplet)', () => {
-    const parent = new GraphNode<string>('parent');
-    const child1 = new GraphNode<string>('child1');
-    const child2 = new GraphNode<string>('child2');
-    const child3 = new GraphNode<string>('child3');
+    const parent = new TreeNode<string>('parent');
+    const child1 = new TreeNode<string>('child1');
+    const child2 = new TreeNode<string>('child2');
+    const child3 = new TreeNode<string>('child3');
 
     const modifier = modify(parent);
     modifier.addChild(child1);
@@ -68,8 +68,8 @@ describe('ModifyNode.removeChild', () => {
   });
 
   test('should throw an error if the node is not a child', () => {
-    const parent = new GraphNode<string>('parent');
-    const unrelated = new GraphNode<string>('unrelated');
+    const parent = new TreeNode<string>('parent');
+    const unrelated = new TreeNode<string>('unrelated');
 
     const modifier = modify(parent);
 
