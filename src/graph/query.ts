@@ -9,6 +9,7 @@ export interface IQueryNode<T> {
 
   getChildren(): Generator<GraphNode<T>>;
   getAncestors(): Generator<GraphNode<T>>;
+  getParent(): GraphNode<T> | undefined;
 }
 
 export class QueryNode<T> implements IQueryNode<T> {
@@ -62,6 +63,10 @@ export class QueryNode<T> implements IQueryNode<T> {
       yield current;
       current = current.parent;
     }
+  }
+
+  getParent(): GraphNode<T> | undefined {
+    return this.subject.parent;
   }
 }
 
