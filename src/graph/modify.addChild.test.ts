@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { GraphNode } from './GraphNode';
 import { modify } from './modify';
 
-describe("addChild", () => {
+describe("modify.addChild", () => {
   test("adds a child at the end if beforeChild is undefined", () => {
     const parent = new GraphNode(1);
     const child1 = new GraphNode(2);
