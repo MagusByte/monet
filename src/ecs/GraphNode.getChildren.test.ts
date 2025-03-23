@@ -11,12 +11,12 @@ describe("getChildren", () => {
     const parent = new GraphNode(1);
     const child1 = new GraphNode(2);
     const child2 = new GraphNode(3);
+    const child3 = new GraphNode(3);
 
     parent.firstChild = child1;
-    parent.lastChild = child2;
     child1.nextSibling = child2;
-    child2.previousSibling = child1;
+    child2.nextSibling = child3;
 
-    expect(getChildren(parent)).toEqual([child1, child2]);
+    expect(getChildren(parent)).toEqual([child1, child2, child3]);
   });
 });

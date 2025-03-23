@@ -59,7 +59,7 @@ export function addChild<T>(
   }
 }
 
-function isAncestor<T>(node: GraphNode<T>, potentialAncestor: GraphNode<T>): boolean {
+export function isAncestor<T>(node: GraphNode<T>, potentialAncestor: GraphNode<T>): boolean {
   let current = node.parent;
   while (current) {
     if (current === potentialAncestor) {

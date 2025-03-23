@@ -18,19 +18,10 @@ describe("GraphNode", () => {
     expect(sut.lastChild).toBeUndefined();
   });
 
-  test("linked list structure is maintained", () => {
-    const parent = new GraphNode(1);
-    const child1 = new GraphNode(2);
-    const child2 = new GraphNode(3);
+  test("newly created GraphNode has no siblings", () => {
+    const sut = new GraphNode(1);
 
-    parent.firstChild = child1;
-    parent.lastChild = child2;
-    child1.nextSibling = child2;
-    child2.previousSibling = child1;
-
-    expect(parent.firstChild).toBe(child1);
-    expect(parent.lastChild).toBe(child2);
-    expect(child1.nextSibling).toBe(child2);
-    expect(child2.previousSibling).toBe(child1);
+    expect(sut.nextSibling).toBeUndefined();
+    expect(sut.previousSibling).toBeUndefined();
   });
 });

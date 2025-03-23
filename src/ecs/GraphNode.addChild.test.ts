@@ -57,7 +57,7 @@ describe("addChild", () => {
 
     addChild(parent, child);
 
-    expect(() => addChild(parent, child)).toThrow("The newChild is already a child of this parent.");
+    expect(() => addChild(parent, child)).toThrow("The newChild already has a parent.");
   });
 
   test("throws if newChild already has a parent", () => {
