@@ -10,6 +10,7 @@ export interface IQueryNode<T> {
   getChildren(): Generator<GraphNode<T>>;
   getAncestors(): Generator<GraphNode<T>>;
   getParent(): GraphNode<T> | undefined;
+  getDescendents(order?: "breadth-first" | "depth-first"): Generator<GraphNode<T>>;
 }
 
 export class QueryNode<T> implements IQueryNode<T> {
@@ -67,6 +68,42 @@ export class QueryNode<T> implements IQueryNode<T> {
 
   getParent(): GraphNode<T> | undefined {
     return this.subject.parent;
+  }
+
+  *getDescendents(order: "breadth-first" | "depth-first" = "depth-first"): Generator<GraphNode<T>> {
+    if (order === "depth-first") {
+      const stack: GraphNode<T>[] = [];
+      let current = this.subject.firstChild;
+
+      while (current || stack.length > 0) {
+        if (current) {
+          yield current;
+          stack.push(current.nextSibling);
+          current = current.firstChild;
+        } else {
+          current = stack.pop() || undefined;
+        }
+      }
+    } else if (order === "breadth-first") {
+      const queue: GraphNode<T>[] = [];
+      let current = this.subject.firstChild;
+
+      while (current) {
+        queue.push(current);
+        current = current.nextSibling;
+      }
+
+      while (queue.length > 0) {
+        const node = queue.shift()!;
+        yield node;
+
+        let child = node.firstChild;
+        while (child) {
+          queue.push(child);
+          child = child.nextSibling;
+        }
+      }
+    }
   }
 }
 
