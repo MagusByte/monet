@@ -1,6 +1,17 @@
 import { GraphNode } from './GraphNode';
 
 /**
+ * Creates a query node for the given graph node.
+ *
+ * @template T - The type of the data contained in the graph node.
+ * @param subject - The graph node to query.
+ * @returns An instance of `IQueryNode<T>` that allows querying operations on the graph node.
+ */
+export function query<T>(subject: GraphNode<T>): IQueryNode<T> {
+  return new QueryNode(subject);
+}
+
+/**
  * Represents a query node in a graph structure, providing methods to traverse
  * and query relationships between nodes such as parent, child, ancestor, and descendant.
  *
@@ -136,7 +147,7 @@ class QueryNode<T> implements IQueryNode<T> {
       while (current || stack.length > 0) {
         if (current) {
           yield current;
-          if(current.nextSibling)
+          if (current.nextSibling)
             stack.push(current.nextSibling);
           current = current.firstChild;
         } else {
@@ -164,15 +175,4 @@ class QueryNode<T> implements IQueryNode<T> {
       }
     }
   }
-}
-
-/**
- * Creates a query node for the given graph node.
- *
- * @template T - The type of the data contained in the graph node.
- * @param subject - The graph node to query.
- * @returns An instance of `IQueryNode<T>` that allows querying operations on the graph node.
- */
-export function query<T>(subject: GraphNode<T>): IQueryNode<T> {
-  return new QueryNode(subject);
 }
