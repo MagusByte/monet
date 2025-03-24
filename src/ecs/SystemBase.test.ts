@@ -5,11 +5,11 @@ import { IComponentFactory } from './IComponentFactory';
 
 class TestComponentFactory implements IComponentFactory<string> {
   create(): string {
-    return 'defaultComponent';
+    throw new Error("Invoking non-faked method");
   }
 
   destroy(component: string): void {
-    // Mock implementation
+    throw new Error("Invoking non-faked method");
   }
 }
 
@@ -32,7 +32,7 @@ describe('SystemBase', () => {
 
   describe('addTo', () => {
     test('returns a newly created component', () => {
-      const createSpy = vi.spyOn(factory, 'create');
+      const createSpy = vi.spyOn(factory, 'create').mockReturnValue('defaultComponent');
       expect(sut.addTo({} as Entity)).toBe('defaultComponent');
       expect(createSpy).toHaveBeenCalledOnce();
     });
