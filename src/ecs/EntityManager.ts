@@ -1,6 +1,12 @@
 import { Entity } from './Entity';
 
-export class EntityManager {
+export interface IEntityManager<TEntity> {
+  getEntities(): TEntity[];
+  createEntity(): TEntity;
+  destroyEntity(entity: TEntity): void;
+}
+
+export class EntityManager implements IEntityManager<Entity> {
   private _lastKey = 0;
   private _entities: Entity[] = [];
 
