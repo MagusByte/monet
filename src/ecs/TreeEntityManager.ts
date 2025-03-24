@@ -3,7 +3,11 @@ import { TreeNode } from '../graph/TreeNode';
 import { query } from '../graph/query';
 import { modify } from '../graph/modify';
 
-export class TreeEntityManager<TEntity> implements IEntityManager<TreeNode<TEntity>> {
+export interface ITreeEntityManager<TEntity> extends IEntityManager<TreeNode<TEntity>> {
+  getRootNodes(): TreeNode<TEntity>[];
+}
+
+export class TreeEntityManager<TEntity> implements ITreeEntityManager<TEntity> {
   private readonly entityManager: IEntityManager<TreeNode<TEntity>>;
 
   constructor(entityManager: IEntityManager<TreeNode<TEntity>>) {
@@ -23,7 +27,7 @@ export class TreeEntityManager<TEntity> implements IEntityManager<TreeNode<TEnti
     if (parent) {
       modify(parent).removeChild(node); // Update the parent child relationship
     }
-    
+
     const nodesToRemove = [node, ...query(node).getDescendents("depth-first")];
     nodesToRemove.forEach(e => {
       this.entityManager.destroyEntity(e);

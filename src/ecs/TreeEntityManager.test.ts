@@ -1,4 +1,4 @@
-import { TreeEntityManager } from './TreeEntityManager';
+import { ITreeEntityManager, TreeEntityManager } from './TreeEntityManager';
 import { TreeNode } from '../graph/TreeNode';
 import { IEntityManager } from './EntityManager';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
@@ -6,7 +6,7 @@ import { modify } from '../graph/modify';
 
 describe('TreeEntityManager', () => {
   let mockEntityManager: IEntityManager<TreeNode<number>>;
-  let treeEntityManager: TreeEntityManager<number>;
+  let sut: ITreeEntityManager<number>;
 
   beforeEach(() => {
     mockEntityManager = {
@@ -15,14 +15,14 @@ describe('TreeEntityManager', () => {
       destroyEntity: () => { throw new Error("Invoking non-faked method"); },
     };
 
-    treeEntityManager = new TreeEntityManager(mockEntityManager);
+    sut = new TreeEntityManager(mockEntityManager);
   });
 
   test('should return all entities', () => {
     const entities = [new TreeNode(1), new TreeNode(2)];
     vi.spyOn(mockEntityManager, 'getEntities').mockReturnValue(entities);
 
-    const result = treeEntityManager.getEntities();
+    const result = sut.getEntities();
 
     expect(result).toEqual(entities);
     expect(mockEntityManager.getEntities).toHaveBeenCalled();
@@ -32,7 +32,7 @@ describe('TreeEntityManager', () => {
     const newEntity = new TreeNode(1);
     vi.spyOn(mockEntityManager, 'createEntity').mockReturnValue(newEntity);
 
-    const result = treeEntityManager.createEntity();
+    const result = sut.createEntity();
 
     expect(result).toBe(newEntity);
     expect(mockEntityManager.createEntity).toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe('TreeEntityManager', () => {
     vi.spyOn(mockEntityManager, 'getEntities').mockReturnValue([root, child, grandchild]);
     vi.spyOn(mockEntityManager, 'destroyEntity').mockImplementation(() => { });
 
-    treeEntityManager.destroyEntity(child);
+    sut.destroyEntity(child);
 
     expect(mockEntityManager.destroyEntity).toHaveBeenCalledWith(child);
     expect(mockEntityManager.destroyEntity).toHaveBeenCalledWith(grandchild);
@@ -62,7 +62,7 @@ describe('TreeEntityManager', () => {
 
     vi.spyOn(mockEntityManager, "getEntities").mockReturnValue([root1, root2, child]);
 
-    const result = treeEntityManager.getRootNodes();
+    const result = sut.getRootNodes();
 
     expect(result).toEqual([root1, root2]);
   });
