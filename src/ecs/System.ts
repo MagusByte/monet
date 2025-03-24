@@ -1,20 +1,15 @@
 import { Entity } from "./Entity";
-import { SystemUpdate } from "./SystemUpdate";
 import { IComponentFactory } from "./IComponentFactory";
 
 export interface ISystem {
-  update(delta: SystemUpdate): void;
 }
+
 export class System<TComponent, TEntity = Entity> implements ISystem {
   private registrations: ComponentRegistration<TComponent, TEntity>[] = [];
 
   constructor(
     private readonly factory: IComponentFactory<TComponent>
   ) { }
-
-  update(delta: SystemUpdate): void {
-    // Default implementation: No operation
-  }
 
   addTo(entity: TEntity): TComponent {
     if (this.registrations.some(reg => reg.entity === entity)) {
