@@ -1,5 +1,5 @@
 import { Entity } from './Entity'; // Ensure that './Entity' is the correct path to the Entity class file
-import { System, ISystem } from './System'; // Updated import
+import { ISystem } from './System'; // Updated import
 
 export class World {
   private _lastKey = 0;
