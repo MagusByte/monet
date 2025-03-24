@@ -34,6 +34,10 @@ export class System<TComponent> implements ISystem {
     return registration?.component;
   }
 
+  has(entity: Entity): boolean {
+    return this.registrations.some(reg => reg.entity === entity);
+  }
+
   getAll(): ComponentRegistration<TComponent>[] {
     return this.registrations;
   }
