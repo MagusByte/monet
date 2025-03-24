@@ -47,7 +47,10 @@ export class EntityManager<TEntity> implements IEntityManager<TEntity> {
   }
 
   destroyEntity(entity: TEntity) {
-    this._entities = this._entities.filter(x => entity !== x);
-    this.emitEvent("onDestroy", { entity: entity });
+    const index = this._entities.indexOf(entity);
+    if (index !== -1) {
+      this._entities.splice(index, 1);
+      this.emitEvent("onDestroy", { entity: entity });
+    }
   }
 }

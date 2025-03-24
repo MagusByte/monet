@@ -73,4 +73,14 @@ describe("EntityManager Event Handlers", () => {
     expect(handler1).toHaveBeenCalledBefore(handler3);
     expect(handler2).not.toHaveBeenCalled();
   });
+
+  it("should not call onDestroy event handlers for entities not managed by the EntityManager", () => {
+    const unmanagedEntity = {};
+    const onDestroyHandler = vi.fn();
+
+    entityManager.addEventHandler("onDestroy", onDestroyHandler);
+    entityManager.destroyEntity(unmanagedEntity);
+
+    expect(onDestroyHandler).not.toHaveBeenCalled();
+  });
 });
