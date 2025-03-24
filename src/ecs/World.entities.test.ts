@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test } from "vitest";
-import { World, Entity, ISystem } from './World';
+import { World } from './World';
+import { Entity } from './Entity';
 
 describe("entities", () => {
   test("A new world has no entities", () => {

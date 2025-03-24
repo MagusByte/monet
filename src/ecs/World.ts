@@ -1,10 +1,5 @@
-export class Entity {
-  constructor(
-    public readonly key: number
-  ) { }
-}
-
-export interface ISystem { }
+import { Entity } from './Entity'; // Ensure that './Entity' is the correct path to the Entity class file
+import { ISystem } from './ISystem';
 
 export class World {
   private _lastKey = 0;
@@ -33,6 +28,6 @@ export class World {
   removeSystem(system: ISystem) {
     this._systems = this._systems.filter(s => s !== system);
   }
-  
+
 }
 
