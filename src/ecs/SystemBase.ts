@@ -3,6 +3,8 @@ import { SystemUpdate } from "./SystemUpdate";
 import { IComponentFactory } from "./IComponentFactory";
 
 export class SystemBase<TComponent> {
+  private registrations: ComponentRegistration<TComponent>[] = [];
+
   constructor(
     private readonly factory: IComponentFactory<TComponent>
   ) { }
@@ -12,15 +14,16 @@ export class SystemBase<TComponent> {
   }
 
   addTo(entity: Entity): TComponent {
-    return this.factory.create();
+    const component = this.factory.create();
+    this.registrations.push({ entity, component });
+    return component;
   }
 
   removeFrom(entity: Entity): void {
-    // Default implementation: No operation
   }
 
   getAll(): ComponentRegistration<TComponent>[] {
-    return [];
+    return this.registrations;
   }
 }
 

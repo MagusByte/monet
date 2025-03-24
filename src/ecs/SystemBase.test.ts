@@ -36,5 +36,29 @@ describe('SystemBase', () => {
       expect(sut.addTo({} as Entity)).toBe('defaultComponent');
       expect(createSpy).toHaveBeenCalledOnce();
     });
+
+    test('addTo updates internal registration', () => {
+      // Arrange
+      vi.spyOn(factory, 'create').mockReturnValue('defaultComponent');
+      const entity = {} as Entity;
+
+      // Act
+      const newComponent = sut.addTo(entity);
+
+      // Assert
+      const allComponents = sut.getAll();
+      expect(allComponents).toHaveLength(1);
+      expect(allComponents[0]).toEqual({ entity, component: newComponent });
+    });
+  });
+
+  describe('getAll', () => {
+    test('returns an empty array by default', () => {
+      expect(sut.getAll()).toEqual([]);
+    });
+  });
+
+  describe('addTo and getAll integration', () => {
+    
   });
 });
