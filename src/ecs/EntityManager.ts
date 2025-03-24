@@ -4,12 +4,12 @@ type EntityEvent<TEntity> = { entity: TEntity };
 
 export type EntityDestroyedEvent<TEntity> = EntityEvent<TEntity>;
 
-type EntityEventMap<TEntity> = {
+export type EntityEventMap<TEntity> = {
   onDestroy: EntityDestroyedEvent<TEntity>;
 };
 
-type EventHandler<K extends keyof EntityEventMap<TEntity>, TEntity> = (event: EntityEventMap<TEntity>[K]) => void;
-type EventHandlers<TEntity> = {
+export type EventHandler<K extends keyof EntityEventMap<TEntity>, TEntity> = (event: EntityEventMap<TEntity>[K]) => void;
+export type EventHandlers<TEntity> = {
   [K in keyof EntityEventMap<TEntity>]: (EventHandler<K, TEntity>)[]
 };
 
@@ -17,6 +17,8 @@ export interface IEntityManager<TEntity> {
   getEntities(): TEntity[];
   createEntity(): TEntity;
   destroyEntity(entity: TEntity): void;
+  addEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: EventHandler<K, TEntity>): void;
+  removeEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: EventHandler<K, TEntity>): void;
 }
 
 export class EntityManager<TEntity> implements IEntityManager<TEntity> {

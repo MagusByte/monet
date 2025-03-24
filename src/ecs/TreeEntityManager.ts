@@ -1,4 +1,4 @@
-import { IEntityManager } from './EntityManager';
+import { EntityEventMap, EventHandler, IEntityManager } from './EntityManager';
 import { TreeNode } from '../graph/TreeNode';
 import { query } from '../graph/query';
 import { modify } from '../graph/modify';
@@ -8,10 +8,10 @@ export interface ITreeEntityManager<TEntity> extends IEntityManager<TreeNode<TEn
 }
 
 export class TreeEntityManager<TEntity> implements ITreeEntityManager<TEntity> {
-  private readonly entityManager: IEntityManager<TreeNode<TEntity>>;
 
-  constructor(entityManager: IEntityManager<TreeNode<TEntity>>) {
-    this.entityManager = entityManager;
+  constructor(
+    public readonly entityManager: IEntityManager<TreeNode<TEntity>>
+  ) {
   }
 
   getEntities(): TreeNode<TEntity>[] {
@@ -36,5 +36,13 @@ export class TreeEntityManager<TEntity> implements ITreeEntityManager<TEntity> {
 
   getRootNodes(): TreeNode<TEntity>[] {
     return this.getEntities().filter(node => query(node).getParent() === undefined);
+  }
+
+  addEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: EventHandler<K, TreeNode<TEntity>>) {
+    this.entityManager.addEventHandler(event, listener);
+  }
+
+  removeEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: EventHandler<K, TreeNode<TEntity>>) {
+    this.entityManager.removeEventHandler(event, listener);
   }
 }
