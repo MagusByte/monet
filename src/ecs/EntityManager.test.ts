@@ -38,9 +38,5 @@ describe("EntityManager", () => {
       sut.destroyEntity(entity);
       expect(sut.getEntities()).toEqual([]);
     });
-
-    test.todo("will inform system that entity was deleted");
-    test.todo("will inform system of destroyed childElements");
-    test.todo("will inform the relationship");
   });
 });
