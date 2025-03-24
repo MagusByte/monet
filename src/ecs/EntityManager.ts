@@ -1,11 +1,4 @@
 import { IEntityFactory } from "./IEntityFactory";
-
-export interface IEntityManager<TEntity> {
-  getEntities(): TEntity[];
-  createEntity(): TEntity;
-  destroyEntity(entity: TEntity): void;
-}
-
 type EntityEvent<TEntity> = { entity: TEntity };
 type EntityDestroyedEvent<TEntity> = EntityEvent<TEntity>;
 
@@ -14,10 +7,17 @@ type EntityEventMap<TEntity> = {
 };
 
 type EventHandler<K extends keyof EntityEventMap<TEntity>, TEntity> = (event: EntityEventMap<TEntity>[K]) => void;
-type EventHandlers<TEntity> = { 
-  [K in keyof EntityEventMap<TEntity>]: (EventHandler<K, TEntity>)[] 
+type EventHandlers<TEntity> = {
+  [K in keyof EntityEventMap<TEntity>]: (EventHandler<K, TEntity>)[]
 };
 
+
+
+export interface IEntityManager<TEntity> {
+  getEntities(): TEntity[];
+  createEntity(): TEntity;
+  destroyEntity(entity: TEntity): void;
+}
 
 export class EntityManager<TEntity> implements IEntityManager<TEntity> {
   private _entities: TEntity[] = [];
