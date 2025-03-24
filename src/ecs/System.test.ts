@@ -2,8 +2,6 @@ import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { System } from './System';
 import { IComponentFactory } from './IComponentFactory';
 
-
-
 describe('System', () => {
   let sut: System<string>;
   let factory: IComponentFactory<string>;

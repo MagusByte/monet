@@ -5,8 +5,8 @@ import { IComponentFactory } from "./IComponentFactory";
 export interface ISystem {
   update(delta: SystemUpdate): void;
 }
-export class System<TComponent> implements ISystem {
-  private registrations: ComponentRegistration<TComponent>[] = [];
+export class System<TComponent, TEntity = Entity> implements ISystem {
+  private registrations: ComponentRegistration<TComponent, TEntity>[] = [];
 
   constructor(
     private readonly factory: IComponentFactory<TComponent>
@@ -16,7 +16,7 @@ export class System<TComponent> implements ISystem {
     // Default implementation: No operation
   }
 
-  addTo(entity: Entity): TComponent {
+  addTo(entity: TEntity): TComponent {
     if (this.registrations.some(reg => reg.entity === entity)) {
       throw new Error('Entity is already registered.');
     }
@@ -25,7 +25,7 @@ export class System<TComponent> implements ISystem {
     return component;
   }
 
-  removeFrom(entity: Entity): void {
+  removeFrom(entity: TEntity): void {
     const registration = this.registrations.find(reg => reg.entity === entity);
     if (registration) {
       this.factory.destroy?.(registration.component); // Invoke destroy if defined
@@ -33,21 +33,21 @@ export class System<TComponent> implements ISystem {
     }
   }
 
-  getBy(entity: Entity): TComponent | undefined {
+  getBy(entity: TEntity): TComponent | undefined {
     const registration = this.registrations.find(reg => reg.entity === entity);
     return registration?.component;
   }
 
-  has(entity: Entity): boolean {
+  has(entity: TEntity): boolean {
     return this.registrations.some(reg => reg.entity === entity);
   }
 
-  getAll(): ComponentRegistration<TComponent>[] {
+  getAll(): ComponentRegistration<TComponent, TEntity>[] {
     return this.registrations;
   }
 }
 
-export interface ComponentRegistration<TComponent> {
-  entity: Entity;
+export interface ComponentRegistration<TComponent, TEntity = Entity> {
+  entity: TEntity;
   component: TComponent;
 }
