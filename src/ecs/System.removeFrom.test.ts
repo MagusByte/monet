@@ -35,4 +35,21 @@ describe('removeFrom', () => {
     expect(allComponents).toHaveLength(1);
     expect(allComponents[0].entity).toBe(entity);
   });
+
+  test('invokes destroy on the component if destroy is defined', () => {
+    const destroyMock = vi.fn();
+    factory.destroy = destroyMock;
+    vi.spyOn(factory, 'create').mockReturnValue('defaultComponent');
+    const entity = new Entity(1);
+    sut.addTo(entity);
+    sut.removeFrom(entity);
+    expect(destroyMock).toHaveBeenCalledWith('defaultComponent');
+  });
+
+  test('does not throw if destroy is not defined', () => {
+    vi.spyOn(factory, 'create').mockReturnValue('defaultComponent');
+    const entity = new Entity(1);
+    sut.addTo(entity);
+    expect(() => sut.removeFrom(entity)).not.toThrow();
+  });
 });

@@ -26,7 +26,11 @@ export class System<TComponent> implements ISystem {
   }
 
   removeFrom(entity: Entity): void {
-    this.registrations = this.registrations.filter(reg => reg.entity !== entity);
+    const registration = this.registrations.find(reg => reg.entity === entity);
+    if (registration) {
+      this.factory.destroy?.(registration.component); // Invoke destroy if defined
+      this.registrations = this.registrations.filter(reg => reg.entity !== entity);
+    }
   }
 
   getBy(entity: Entity): TComponent | undefined {
