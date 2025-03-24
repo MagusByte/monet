@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { World } from './World';
-import { SystemBase } from './SystemBase'; // Updated import
+import { SystemBase } from './SystemBase';
 
 test("Can create a new world", () => {
   expect(() => new World()).not.toThrow();
