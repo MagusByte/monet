@@ -1,6 +1,8 @@
 import { IEntityFactory } from "./IEntityFactory";
+
 type EntityEvent<TEntity> = { entity: TEntity };
-type EntityDestroyedEvent<TEntity> = EntityEvent<TEntity>;
+
+export type EntityDestroyedEvent<TEntity> = EntityEvent<TEntity>;
 
 type EntityEventMap<TEntity> = {
   onDestroy: EntityDestroyedEvent<TEntity>;
@@ -10,8 +12,6 @@ type EventHandler<K extends keyof EntityEventMap<TEntity>, TEntity> = (event: En
 type EventHandlers<TEntity> = {
   [K in keyof EntityEventMap<TEntity>]: (EventHandler<K, TEntity>)[]
 };
-
-
 
 export interface IEntityManager<TEntity> {
   getEntities(): TEntity[];
