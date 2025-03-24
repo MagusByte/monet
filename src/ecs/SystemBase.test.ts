@@ -1,23 +1,10 @@
 import { describe, test, expect } from 'vitest';
-import { SystemBase, ComponentRegistration } from './SystemBase';
-import { SystemUpdate } from './SystemUpdate';
+import { SystemBase } from './SystemBase';
 import { Entity } from './Entity';
 
 class TestSystem extends SystemBase<string> {
-  update(delta: SystemUpdate): void {
-    // Mock implementation
-  }
-
   addTo(entity: Entity): string {
     return 'testComponent';
-  }
-
-  removeFrom(entity: Entity): void {
-    // Mock implementation
-  }
-
-  getAll(): ComponentRegistration<string>[] {
-    return [];
   }
 }
 
