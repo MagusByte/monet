@@ -6,11 +6,16 @@ export interface IEntityManager<TEntity> {
   destroyEntity(entity: TEntity): void;
 }
 
-type EventHandler = (...args: any[]) => void;
+type EntityEvent<TEntity> = { entity: TEntity };
+type EntityDestroyedEvent<TEntity> = EntityEvent<TEntity>;
+
+type EntityEventMap<TEntity> = {
+  onDestroy: EntityDestroyedEvent<TEntity>;
+};
 
 export class EntityManager<TEntity> implements IEntityManager<TEntity> {
   private _entities: TEntity[] = [];
-  private _eventHandlers: { [event: string]: EventHandler[] } = {};
+  private _eventHandlers: { [K in keyof EntityEventMap<TEntity>]?: ((event: EntityEventMap<TEntity>[K])=>void)[] } = {};
 
   constructor(private readonly entityFactory: IEntityFactory<TEntity>) { }
 
@@ -22,27 +27,27 @@ export class EntityManager<TEntity> implements IEntityManager<TEntity> {
     return entity;
   }
 
-  addEventHandler(event: string, listener: EventHandler) {
+  addEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: ((event: EntityEventMap<TEntity>[K])=>void)) {
     if (!this._eventHandlers[event]) {
       this._eventHandlers[event] = [];
     }
-    this._eventHandlers[event].push(listener);
+    this._eventHandlers[event]!.push(listener);
   }
 
-  removeEventHandler(event: string, listener: EventHandler) {
+  removeEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: ((event: EntityEventMap<TEntity>[K])=>void)) {
     if (!this._eventHandlers[event]) return;
-    this._eventHandlers[event] = this._eventHandlers[event].filter(l => l !== listener);
+    this._eventHandlers[event] = this._eventHandlers[event]!.filter(l => l !== listener);
   }
 
-  private _emitEvent(event: string, ...args: any[]) {
+  private emitEvent<K extends keyof EntityEventMap<TEntity>>(event: K, args: EntityEventMap<TEntity>[K]) {
     if (!this._eventHandlers[event]) return;
-    for (const listener of this._eventHandlers[event]) {
-      listener(...args);
+    for (const listener of this._eventHandlers[event]!) {
+      listener(args);
     }
   }
 
   destroyEntity(entity: TEntity) {
     this._entities = this._entities.filter(x => entity !== x);
-    this._emitEvent("onDestroy", entity);
+    this.emitEvent("onDestroy", { entity: entity });
   }
 }

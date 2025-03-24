@@ -24,7 +24,7 @@ describe("EntityManager Event Handlers", () => {
     entityManager.addEventHandler("onDestroy", onDestroyHandler);
     entityManager.destroyEntity(entity);
 
-    expect(onDestroyHandler).toHaveBeenCalledWith(entity);
+    expect(onDestroyHandler).toHaveBeenCalledWith({entity});
   });
 
   it("should not call removed onDestroy event handlers", () => {
@@ -52,8 +52,8 @@ describe("EntityManager Event Handlers", () => {
     entityManager.addEventHandler("onDestroy", handler2);
     entityManager.destroyEntity(entity);
 
-    expect(handler1).toHaveBeenCalledWith(entity);
-    expect(handler2).toHaveBeenCalledWith(entity);
+    expect(handler1).toHaveBeenCalledWith({ entity });
+    expect(handler2).toHaveBeenCalledWith({ entity });
   });
 
 
