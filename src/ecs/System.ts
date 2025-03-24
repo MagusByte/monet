@@ -29,6 +29,11 @@ export class System<TComponent> implements ISystem {
     this.registrations = this.registrations.filter(reg => reg.entity !== entity);
   }
 
+  getBy(entity: Entity): TComponent | undefined {
+    const registration = this.registrations.find(reg => reg.entity === entity);
+    return registration?.component;
+  }
+
   getAll(): ComponentRegistration<TComponent>[] {
     return this.registrations;
   }
