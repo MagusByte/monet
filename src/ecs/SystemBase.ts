@@ -14,6 +14,9 @@ export class SystemBase<TComponent> {
   }
 
   addTo(entity: Entity): TComponent {
+    if (this.registrations.some(reg => reg.entity === entity)) {
+      throw new Error('Entity is already registered.');
+    }
     const component = this.factory.create();
     this.registrations.push({ entity, component });
     return component;

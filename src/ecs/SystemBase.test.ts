@@ -50,6 +50,17 @@ describe('SystemBase', () => {
       expect(allComponents).toHaveLength(1);
       expect(allComponents[0]).toEqual({ entity, component: newComponent });
     });
+
+    test('throws an error when the entity is already registered', () => {
+      // Arrange
+      vi.spyOn(factory, 'create').mockReturnValue('defaultComponent');
+      const entity = new Entity(1);
+
+      sut.addTo(entity);
+
+      // Act & Assert
+      expect(() => sut.addTo(entity)).toThrowError('Entity is already registered.');
+    });
   });
 
   describe('getAll', () => {
