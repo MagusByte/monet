@@ -3,7 +3,7 @@ import { System } from './System';
 import { IComponentFactory } from './IComponentFactory';
 
 describe('System', () => {
-  let sut: System<string>;
+  let sut: System<string, number>;
   let factory: IComponentFactory<string>;
 
   beforeEach(() => {

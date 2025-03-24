@@ -1,13 +1,12 @@
 import { TreeEntityManager } from './TreeEntityManager';
 import { TreeNode } from '../graph/TreeNode';
-import { Entity } from './Entity';
 import { IEntityManager } from './EntityManager';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { modify } from '../graph/modify';
 
 describe('TreeEntityManager', () => {
-  let mockEntityManager: IEntityManager<TreeNode<Entity>>;
-  let treeEntityManager: TreeEntityManager;
+  let mockEntityManager: IEntityManager<TreeNode<number>>;
+  let treeEntityManager: TreeEntityManager<number>;
 
   beforeEach(() => {
     mockEntityManager = {
@@ -20,7 +19,7 @@ describe('TreeEntityManager', () => {
   });
 
   test('should return all entities', () => {
-    const entities = [new TreeNode(new Entity(1)), new TreeNode(new Entity(2))];
+    const entities = [new TreeNode(1), new TreeNode(2)];
     vi.spyOn(mockEntityManager, 'getEntities').mockReturnValue(entities);
 
     const result = treeEntityManager.getEntities();
@@ -30,7 +29,7 @@ describe('TreeEntityManager', () => {
   });
 
   test('should create a new entity', () => {
-    const newEntity = new TreeNode(new Entity(1));
+    const newEntity = new TreeNode(1);
     vi.spyOn(mockEntityManager, 'createEntity').mockReturnValue(newEntity);
 
     const result = treeEntityManager.createEntity();
@@ -40,9 +39,9 @@ describe('TreeEntityManager', () => {
   });
 
   test('should destroy an entity and its descendants', () => {
-    const root = new TreeNode(new Entity(1));
-    const child = new TreeNode(new Entity(2));
-    const grandchild = new TreeNode(new Entity(3));
+    const root = new TreeNode(1);
+    const child = new TreeNode(2);
+    const grandchild = new TreeNode(3);
     modify(root).addChild(child);
     modify(child).addChild(grandchild);
 
@@ -56,9 +55,9 @@ describe('TreeEntityManager', () => {
   });
 
   test('should return root nodes', () => {
-    const root1 = new TreeNode(new Entity(1));
-    const root2 = new TreeNode(new Entity(2));
-    const child = new TreeNode(new Entity(3));
+    const root1 = new TreeNode(1);
+    const root2 = new TreeNode(2);
+    const child = new TreeNode(3);
     modify(root1).addChild(child);
 
     vi.spyOn(mockEntityManager, "getEntities").mockReturnValue([root1, root2, child]);

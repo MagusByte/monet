@@ -1,10 +1,9 @@
-import { Entity } from "./Entity";
 import { IComponentFactory } from "./IComponentFactory";
 
 export interface ISystem {
 }
 
-export class System<TComponent, TEntity = Entity> implements ISystem {
+export class System<TComponent, TEntity> implements ISystem {
   private registrations: ComponentRegistration<TComponent, TEntity>[] = [];
 
   constructor(
@@ -42,7 +41,7 @@ export class System<TComponent, TEntity = Entity> implements ISystem {
   }
 }
 
-export interface ComponentRegistration<TComponent, TEntity = Entity> {
+export interface ComponentRegistration<TComponent, TEntity> {
   entity: TEntity;
   component: TComponent;
 }

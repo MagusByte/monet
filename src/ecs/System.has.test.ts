@@ -1,9 +1,8 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { System } from "./System";
-import { Entity } from "./Entity";
 
 describe("System.has", () => {
-  let sut: System<string>;
+  let sut: System<string, number>;
 
   beforeEach(() => {
     sut = new System({
@@ -12,13 +11,11 @@ describe("System.has", () => {
   });
 
   test("should return true for a registered entity", () => {
-    const entity = new Entity(1);
-    sut.addTo(entity);
-    expect(sut.has(entity)).toBe(true);
+    sut.addTo(0);
+    expect(sut.has(0)).toBe(true);
   });
 
   test("should return false for an unregistered entity", () => {
-    const entity = new Entity(1);
-    expect(sut.has(entity)).toBe(false);
+    expect(sut.has(0)).toBe(false);
   });
 });

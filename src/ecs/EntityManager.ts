@@ -1,4 +1,4 @@
-import { Entity } from './Entity';
+import { IEntityFactory } from "./IEntityFactory";
 
 export interface IEntityManager<TEntity> {
   getEntities(): TEntity[];
@@ -6,19 +6,20 @@ export interface IEntityManager<TEntity> {
   destroyEntity(entity: TEntity): void;
 }
 
-export class EntityManager implements IEntityManager<Entity> {
-  private _lastKey = 0;
-  private _entities: Entity[] = [];
+export class EntityManager<TEntity> implements IEntityManager<TEntity> {
+  private _entities: TEntity[] = [];
+
+  constructor(private readonly entityFactory: IEntityFactory<TEntity>) { }
 
   getEntities() { return this._entities; }
 
   createEntity() {
-    const entity = new Entity(++this._lastKey);
+    const entity = this.entityFactory.create();
     this._entities.push(entity);
     return entity;
   }
 
-  destroyEntity(entity: Entity) {
+  destroyEntity(entity: TEntity) {
     this._entities = this._entities.filter(x => entity !== x);
   }
 }

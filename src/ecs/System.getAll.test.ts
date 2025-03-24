@@ -2,7 +2,7 @@ import { describe, test, expect, beforeEach } from 'vitest';
 import { System } from './System';
 
 describe('getAll', () => {
-  let sut: System<string>;
+  let sut: System<string, number>;
 
   beforeEach(() => {
     sut = new System({

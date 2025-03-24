@@ -1,9 +1,8 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { System } from "./System";
-import { Entity } from "./Entity";
 
 describe("System.getBy", () => {
-  let sut: System<string>;
+  let sut: System<string, number>;
 
   beforeEach(() => {
     sut = new System({
@@ -12,13 +11,11 @@ describe("System.getBy", () => {
   });
 
   test("should return the associated component for a registered entity", () => {
-    const entity = new Entity(1);
-    const component = sut.addTo(entity);
-    expect(sut.getBy(entity)).toBe(component);
+    const component = sut.addTo(0);
+    expect(sut.getBy(0)).toBe(component);
   });
 
   test("should return undefined for an unregistered entity", () => {
-    const entity = new Entity(1);
-    expect(sut.getBy(entity)).toBeUndefined();
+    expect(sut.getBy(0)).toBeUndefined();
   });
 });
