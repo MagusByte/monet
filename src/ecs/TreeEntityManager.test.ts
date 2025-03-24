@@ -5,37 +5,39 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { modify } from '../graph/modify';
 
 describe('TreeEntityManager', () => {
-  let mockEntityManager: IEntityManager<TreeNode<number>>;
+  let internalEntityManager: IEntityManager<TreeNode<number>>;
   let sut: ITreeEntityManager<number>;
 
   beforeEach(() => {
-    mockEntityManager = {
+    internalEntityManager = {
       getEntities: () => { throw new Error("Invoking non-faked method"); },
       createEntity: () => { throw new Error("Invoking non-faked method"); },
       destroyEntity: () => { throw new Error("Invoking non-faked method"); },
+      addEventHandler: () => { throw new Error("Invoking non-faked method"); },
+      removeEventHandler: () => { throw new Error("Invoking non-faked method"); },
     };
 
-    sut = new TreeEntityManager(mockEntityManager);
+    sut = new TreeEntityManager(internalEntityManager);
   });
 
   test('should return all entities', () => {
     const entities = [new TreeNode(1), new TreeNode(2)];
-    vi.spyOn(mockEntityManager, 'getEntities').mockReturnValue(entities);
+    vi.spyOn(internalEntityManager, 'getEntities').mockReturnValue(entities);
 
     const result = sut.getEntities();
 
     expect(result).toEqual(entities);
-    expect(mockEntityManager.getEntities).toHaveBeenCalled();
+    expect(internalEntityManager.getEntities).toHaveBeenCalled();
   });
 
   test('should create a new entity', () => {
     const newEntity = new TreeNode(1);
-    vi.spyOn(mockEntityManager, 'createEntity').mockReturnValue(newEntity);
+    vi.spyOn(internalEntityManager, 'createEntity').mockReturnValue(newEntity);
 
     const result = sut.createEntity();
 
     expect(result).toBe(newEntity);
-    expect(mockEntityManager.createEntity).toHaveBeenCalled();
+    expect(internalEntityManager.createEntity).toHaveBeenCalled();
   });
 
   test('should destroy an entity and its descendants', () => {
@@ -45,13 +47,13 @@ describe('TreeEntityManager', () => {
     modify(root).addChild(child);
     modify(child).addChild(grandchild);
 
-    vi.spyOn(mockEntityManager, 'getEntities').mockReturnValue([root, child, grandchild]);
-    vi.spyOn(mockEntityManager, 'destroyEntity').mockImplementation(() => { });
+    vi.spyOn(internalEntityManager, 'getEntities').mockReturnValue([root, child, grandchild]);
+    vi.spyOn(internalEntityManager, 'destroyEntity').mockImplementation(() => { });
 
     sut.destroyEntity(child);
 
-    expect(mockEntityManager.destroyEntity).toHaveBeenCalledWith(child);
-    expect(mockEntityManager.destroyEntity).toHaveBeenCalledWith(grandchild);
+    expect(internalEntityManager.destroyEntity).toHaveBeenCalledWith(child);
+    expect(internalEntityManager.destroyEntity).toHaveBeenCalledWith(grandchild);
   });
 
   test('should return root nodes', () => {
@@ -60,10 +62,28 @@ describe('TreeEntityManager', () => {
     const child = new TreeNode(3);
     modify(root1).addChild(child);
 
-    vi.spyOn(mockEntityManager, "getEntities").mockReturnValue([root1, root2, child]);
+    vi.spyOn(internalEntityManager, "getEntities").mockReturnValue([root1, root2, child]);
 
     const result = sut.getRootNodes();
 
     expect(result).toEqual([root1, root2]);
+  });
+
+
+  test('should add an event handler', () => {
+    const mockHandler = vi.fn();
+    vi.spyOn(internalEntityManager, 'addEventHandler').mockImplementation(() => { });
+
+    sut.addEventHandler('onDestroy', mockHandler);
+
+    expect(internalEntityManager.addEventHandler).toHaveBeenCalledWith('onDestroy', mockHandler);
+  });
+
+  test('should remove an event handler', () => {
+    const mockHandler = vi.fn();
+    vi.spyOn(internalEntityManager, 'removeEventHandler').mockImplementation(() => { });
+    sut.removeEventHandler('onDestroy', mockHandler);
+
+    expect(internalEntityManager.removeEventHandler).toHaveBeenCalledWith('onDestroy', mockHandler);
   });
 });

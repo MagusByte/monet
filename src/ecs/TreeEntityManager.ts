@@ -8,7 +8,6 @@ export interface ITreeEntityManager<TEntity> extends IEntityManager<TreeNode<TEn
 }
 
 export class TreeEntityManager<TEntity> implements ITreeEntityManager<TEntity> {
-
   constructor(
     public readonly entityManager: IEntityManager<TreeNode<TEntity>>
   ) {
