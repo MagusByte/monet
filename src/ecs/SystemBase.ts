@@ -20,6 +20,7 @@ export class SystemBase<TComponent> {
   }
 
   removeFrom(entity: Entity): void {
+    this.registrations = this.registrations.filter(reg => reg.entity !== entity);
   }
 
   getAll(): ComponentRegistration<TComponent>[] {
