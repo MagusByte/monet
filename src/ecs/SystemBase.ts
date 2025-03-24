@@ -1,13 +1,20 @@
 import { Entity } from "./Entity";
 import { SystemUpdate } from "./SystemUpdate";
+import { IComponentFactory } from "./IComponentFactory";
 
-export abstract class SystemBase<TComponent> {
+export class SystemBase<TComponent> {
+  private readonly factory: IComponentFactory<TComponent>;
+
+  constructor(factory: IComponentFactory<TComponent>) {
+    this.factory = factory;
+  }
+
   update(delta: SystemUpdate): void {
     // Default implementation: No operation
   }
 
   addTo(entity: Entity): TComponent {
-    return this.createNewComponent();
+    return this.factory.create();
   }
 
   removeFrom(entity: Entity): void {
@@ -17,8 +24,6 @@ export abstract class SystemBase<TComponent> {
   getAll(): ComponentRegistration<TComponent>[] {
     return [];
   }
-
-  abstract createNewComponent(): TComponent;
 }
 
 export interface ComponentRegistration<TComponent> {
