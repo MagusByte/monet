@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest';
-import { SystemBase } from './SystemBase';
+import { System } from './System';
 import { Entity } from './Entity';
 import { IComponentFactory } from './IComponentFactory';
 
@@ -13,21 +13,21 @@ class TestComponentFactory implements IComponentFactory<string> {
   }
 }
 
-describe('SystemBase', () => {
-  let sut: SystemBase<string>;
+describe('System', () => {
+  let sut: System<string>;
   let factory: TestComponentFactory;
 
   beforeEach(() => {
     factory = new TestComponentFactory();
-    sut = new SystemBase(factory);
+    sut = new System(factory);
   });
 
   test('should be defined', () => {
-    expect(SystemBase).toBeDefined();
+    expect(System).toBeDefined();
   });
 
   test('should allow instantiation with a component factory', () => {
-    expect(sut).toBeInstanceOf(SystemBase);
+    expect(sut).toBeInstanceOf(System);
   });
 
   describe('addTo', () => {

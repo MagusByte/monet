@@ -2,7 +2,10 @@ import { Entity } from "./Entity";
 import { SystemUpdate } from "./SystemUpdate";
 import { IComponentFactory } from "./IComponentFactory";
 
-export class SystemBase<TComponent> {
+export interface ISystem {
+  update(delta: SystemUpdate): void;
+}
+export class System<TComponent> implements ISystem {
   private registrations: ComponentRegistration<TComponent>[] = [];
 
   constructor(

@@ -1,10 +1,10 @@
 import { Entity } from './Entity'; // Ensure that './Entity' is the correct path to the Entity class file
-import { SystemBase } from './SystemBase'; // Updated import
+import { System, ISystem } from './System'; // Updated import
 
 export class World {
   private _lastKey = 0;
   private _entities: Entity[] = [];
-  private _systems: SystemBase[] = []; // Updated type
+  private _systems: ISystem[] = []; // Updated type
   
   getEntities() { return this._entities; }
   getSystems() { return this._systems; }
@@ -19,13 +19,13 @@ export class World {
     this._entities = this._entities.filter(x=> entity != x);
   }
 
-  addSystem(system: SystemBase) { // Updated parameter type
+  addSystem(system: ISystem) {
     if (!this._systems.includes(system)) {
       this._systems.push(system);
     }
   }
 
-  removeSystem(system: SystemBase) { // Updated parameter type
+  removeSystem(system: ISystem) {
     this._systems = this._systems.filter(s => s !== system);
   }
 
