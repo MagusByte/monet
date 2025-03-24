@@ -1,26 +1,32 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { SystemBase } from './SystemBase';
 import { Entity } from './Entity';
 
 class TestSystem extends SystemBase<string> {
-  addTo(entity: Entity): string {
-    return 'testComponent';
+  createNewComponent(): string {
+    throw new Error("Calling an abstract method on TestSystem");
   }
 }
 
 describe('SystemBase', () => {
+  let sut = new TestSystem();
+  beforeEach(()=>{
+    sut = new TestSystem();
+  });
+
   test('should be defined', () => {
     expect(SystemBase).toBeDefined();
   });
 
   test('should allow creating a subclass', () => {
-    const system = new TestSystem();
-    expect(system).toBeInstanceOf(SystemBase);
+    expect(sut).toBeInstanceOf(SystemBase);
   });
 
-  test('should have abstract methods implemented in subclass', () => {
-    const system = new TestSystem();
-    expect(system.addTo({} as Entity)).toBe('testComponent');
-    expect(system.getAll()).toEqual([]);
+  describe("addTo", () => {
+    test('returns a newly created component', () => {
+      const f = vi.spyOn(sut, "createNewComponent").mockReturnValue('defaultComponent');
+      expect(sut.addTo({} as Entity)).toBe('defaultComponent');
+      expect(f).toHaveBeenCalledOnce();
+    });
   });
 });

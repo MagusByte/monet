@@ -7,7 +7,7 @@ export abstract class SystemBase<TComponent> {
   }
 
   addTo(entity: Entity): TComponent {
-    throw new Error("addTo method not implemented.");
+    return this.createNewComponent();
   }
 
   removeFrom(entity: Entity): void {
@@ -17,6 +17,8 @@ export abstract class SystemBase<TComponent> {
   getAll(): ComponentRegistration<TComponent>[] {
     return [];
   }
+
+  abstract createNewComponent(): TComponent;
 }
 
 export interface ComponentRegistration<TComponent> {
