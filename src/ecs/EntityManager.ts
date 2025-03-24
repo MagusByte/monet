@@ -13,9 +13,17 @@ type EntityEventMap<TEntity> = {
   onDestroy: EntityDestroyedEvent<TEntity>;
 };
 
+type EventHandler<K extends keyof EntityEventMap<TEntity>, TEntity> = (event: EntityEventMap<TEntity>[K]) => void;
+type EventHandlers<TEntity> = { 
+  [K in keyof EntityEventMap<TEntity>]: (EventHandler<K, TEntity>)[] 
+};
+
+
 export class EntityManager<TEntity> implements IEntityManager<TEntity> {
   private _entities: TEntity[] = [];
-  private _eventHandlers: { [K in keyof EntityEventMap<TEntity>]?: ((event: EntityEventMap<TEntity>[K])=>void)[] } = {};
+  private _eventHandlers: EventHandlers<TEntity> = {
+    onDestroy: []
+  };
 
   constructor(private readonly entityFactory: IEntityFactory<TEntity>) { }
 
@@ -27,30 +35,31 @@ export class EntityManager<TEntity> implements IEntityManager<TEntity> {
     return entity;
   }
 
-  addEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: ((event: EntityEventMap<TEntity>[K])=>void)) {
-    if (!this._eventHandlers[event]) {
-      this._eventHandlers[event] = [];
-    }
-    this._eventHandlers[event]!.push(listener);
-  }
-
-  removeEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: ((event: EntityEventMap<TEntity>[K])=>void)) {
-    if (!this._eventHandlers[event]) return;
-    this._eventHandlers[event] = this._eventHandlers[event]!.filter(l => l !== listener);
-  }
-
-  private emitEvent<K extends keyof EntityEventMap<TEntity>>(event: K, args: EntityEventMap<TEntity>[K]) {
-    if (!this._eventHandlers[event]) return;
-    for (const listener of this._eventHandlers[event]!) {
-      listener(args);
-    }
-  }
-
   destroyEntity(entity: TEntity) {
     const index = this._entities.indexOf(entity);
     if (index !== -1) {
       this._entities.splice(index, 1);
       this.emitEvent("onDestroy", { entity: entity });
+    }
+  }
+
+  addEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: EventHandler<K, TEntity>) {
+    if (this._eventHandlers[event].includes(listener)) {
+      throw new Error("Handler is already registered");
+    }
+    this._eventHandlers[event].push(listener);
+  }
+
+  removeEventHandler<K extends keyof EntityEventMap<TEntity>>(event: K, listener: EventHandler<K, TEntity>) {
+    const handlers = this._eventHandlers[event];
+    const index = handlers.findIndex(handler => handler === listener);
+    if (index === -1) return;
+    handlers.splice(index, 1);
+  }
+
+  private emitEvent<K extends keyof EntityEventMap<TEntity>>(event: K, args: EntityEventMap<TEntity>[K]) {
+    for (const listener of this._eventHandlers[event]) {
+      listener(args);
     }
   }
 }

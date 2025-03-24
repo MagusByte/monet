@@ -27,6 +27,15 @@ describe("EntityManager Event Handlers", () => {
     expect(onDestroyHandler).toHaveBeenCalledWith({entity});
   });
 
+  it("should throw when adding the same event handler twice", () => {
+    const onDestroyHandler = vi.fn();
+
+    entityManager.addEventHandler("onDestroy", onDestroyHandler);
+    expect(() =>
+      entityManager.addEventHandler("onDestroy", onDestroyHandler)
+    ).toThrowError("Handler is already registered");
+  });
+
   it("should not call removed onDestroy event handlers", () => {
     const entity = entityManager.createEntity();
     const onDestroyHandler = vi.fn();
