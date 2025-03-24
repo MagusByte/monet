@@ -3,11 +3,9 @@ import { SystemUpdate } from "./SystemUpdate";
 import { IComponentFactory } from "./IComponentFactory";
 
 export class SystemBase<TComponent> {
-  private readonly factory: IComponentFactory<TComponent>;
-
-  constructor(factory: IComponentFactory<TComponent>) {
-    this.factory = factory;
-  }
+  constructor(
+    private readonly factory: IComponentFactory<TComponent>
+  ) { }
 
   update(delta: SystemUpdate): void {
     // Default implementation: No operation
