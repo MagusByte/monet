@@ -1,20 +1,14 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { System } from "./System";
 import { Entity } from "./Entity";
-import { IComponentFactory } from "./IComponentFactory";
-
-class MockComponentFactory implements IComponentFactory<string> {
-  create() {
-    return "MockComponent";
-  }
-  destroy(component: string) { }
-}
 
 describe("System.has", () => {
   let sut: System<string>;
 
   beforeEach(() => {
-    sut = new System(new MockComponentFactory());
+    sut = new System({
+      create: () => "MockComponent"
+    });
   });
 
   test("should return true for a registered entity", () => {
