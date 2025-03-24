@@ -1,23 +1,23 @@
 import { beforeEach, describe, expect, test } from "vitest";
-import { World } from './World';
 import { Entity } from './Entity';
+import { EntityManager } from "./EntityManager";
 
-describe("entities", () => {
-  test("A new world has no entities", () => {
-    const sut = new World();
+describe("EntityManager", () => {
+  test("Initially has no entities", () => {
+    const sut = new EntityManager();
     expect(sut.getEntities()).toEqual([]);
   });
 
   describe("createEntity()", () => {
-    let sut = new World();
-    beforeEach(() => sut = new World());
+    let sut = new EntityManager();
+    beforeEach(() => sut = new EntityManager());
 
     test("will return a new entity", () => {
       const entity = sut.createEntity();
       expect(entity).toBeInstanceOf(Entity);
     });
 
-    test("will add entity to the world", () => {
+    test("will store newly created entity", () => {
       const entity = sut.createEntity();
       expect(sut.getEntities()).toEqual([entity]);
     });
@@ -30,10 +30,10 @@ describe("entities", () => {
   });
 
   describe("destroyEntity()", () => {
-    let sut = new World();
-    beforeEach(() => sut = new World());
+    let sut = new EntityManager();
+    beforeEach(() => sut = new EntityManager());
 
-    test("will remove the entity from the world", () => {
+    test("will remove the stored entity", () => {
       const entity = sut.createEntity();
       sut.destroyEntity(entity);
       expect(sut.getEntities()).toEqual([]);

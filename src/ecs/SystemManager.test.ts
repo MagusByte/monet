@@ -1,44 +1,40 @@
 import { beforeEach, describe, expect, test } from "vitest";
-import { World } from './World';
 import { ISystem, System } from './System';
 import { IComponentFactory } from "./IComponentFactory";
+import { SystemManager } from "./SystemManager";
 
-test("Can create a new world", () => {
-  expect(() => new World()).not.toThrow();
-});
+describe("SystemManager", () => {
+  let sut = new SystemManager();
+  beforeEach(() => sut = new SystemManager());
 
-describe("Systems", () => {
-  let sut = new World();
-  beforeEach(() => sut = new World());
-
-  test("A new world has no systems", ()=>{
+  test("Initially has no systems", () => {
     expect(sut.getSystems()).toEqual([]);
   });
 
-  describe("addSystem", ()=>{
-    test("will add the system to the world", ()=>{
+  describe("addSystem", () => {
+    test("will store the system", () => {
       const system = {} as ISystem;
       sut.addSystem(system);
       expect(sut.getSystems()).toEqual([system]);
     });
 
-    test("will not add the same system twice to the world", () => { 
+    test("will not store the same system twice", () => {
       const system = {} as ISystem;
       sut.addSystem(system);
       sut.addSystem(system);
       expect(sut.getSystems()).toEqual([system]);
     });
   });
-  
-  describe("removeSystem", ()=>{
-    test("will remove the system from the world", ()=>{
+
+  describe("removeSystem", () => {
+    test("will remove the system", () => {
       const system = new System({} as unknown as IComponentFactory<string>);
       sut.addSystem(system);
       sut.removeSystem(system);
       expect(sut.getSystems()).toEqual([]);
     });
 
-    test("will not throw when system was never added to the world", () => {
+    test("will not throw when system was never added", () => {
       const system = new System({} as unknown as IComponentFactory<string>);
       expect(() => sut.removeSystem(system)).not.toThrow();
     });
