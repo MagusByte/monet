@@ -1,6 +1,5 @@
-import { describe, test, expect, beforeEach, vi } from 'vitest';
+import { describe, test, expect, beforeEach } from 'vitest';
 import { System } from './System';
-import { Entity } from './Entity';
 import { IComponentFactory } from './IComponentFactory';
 
 class TestComponentFactory implements IComponentFactory<string> {
@@ -13,20 +12,15 @@ class TestComponentFactory implements IComponentFactory<string> {
   }
 }
 
-describe('System', () => {
+describe('getAll', () => {
   let sut: System<string>;
-  let factory: TestComponentFactory;
 
   beforeEach(() => {
-    factory = new TestComponentFactory();
+    const factory = new TestComponentFactory();
     sut = new System(factory);
   });
 
-  test('should be defined', () => {
-    expect(System).toBeDefined();
-  });
-
-  test('should allow instantiation with a component factory', () => {
-    expect(sut).toBeInstanceOf(System);
+  test('returns an empty array by default', () => {
+    expect(sut.getAll()).toEqual([]);
   });
 });
