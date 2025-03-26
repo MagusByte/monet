@@ -2,6 +2,19 @@ import { EventHandlers, EntityEventMap, EventHandler } from "./EntityManagerEven
 import { IEntityFactory } from "./IEntityFactory";
 import { IEntityManager } from "./IEntityManager";
 
+/**
+ * The `EntityManager` class is responsible for managing a collection of entities of type `TEntity`.
+ * It provides functionality for creating, destroying, and retrieving entities, as well as managing
+ * event handlers for entity-related events.
+ *
+ * @template TEntity - The type of entities managed by the `EntityManager`.
+ *
+ * @implements {IEntityManager<TEntity>}
+ *
+ * @remarks
+ * This class uses an `IEntityFactory` to create new entities and maintains an internal list of
+ * entities. It also supports event handling for custom events such as "onDestroy".
+ */
 export class EntityManager<TEntity> implements IEntityManager<TEntity> {
   private _entities: TEntity[] = [];
   private _eventHandlers: EventHandlers<TEntity> = {
