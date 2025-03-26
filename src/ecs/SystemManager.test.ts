@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test } from "vitest";
-import { ISystem, System } from './System';
-import { IComponentFactory } from "./IComponentFactory";
+import { ISystem } from './ISystem';
 import { SystemManager } from "./SystemManager";
 
 describe("SystemManager", () => {
@@ -28,14 +27,14 @@ describe("SystemManager", () => {
 
   describe("removeSystem", () => {
     test("will remove the system", () => {
-      const system = new System<string, number>({} as unknown as IComponentFactory<string>);
+      const system = {} as ISystem<number>;
       sut.addSystem(system);
       sut.removeSystem(system);
       expect(sut.getSystems()).toEqual([]);
     });
 
     test("will not throw when system was never added", () => {
-      const system = new System<string, number>({} as unknown as IComponentFactory<string>);
+      const system = {} as ISystem<number>;
       expect(() => sut.removeSystem(system)).not.toThrow();
     });
   });

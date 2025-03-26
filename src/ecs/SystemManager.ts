@@ -1,4 +1,4 @@
-import { ISystem } from './System';
+import { ISystem } from "./ISystem";
 
 /**
  * Manages a collection of systems in an ECS (Entity Component System) architecture.

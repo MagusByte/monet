@@ -3,6 +3,7 @@ export * from './EntityManagerEvents';
 export * from './IComponentFactory';
 export * from './IEntityFactory';
 export * from './IEntityManager';
+export * from './ISystem';
 export * from './ITreeEntityManager';
 export * from './System';
 export * from './SystemManager';
