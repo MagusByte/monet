@@ -4,11 +4,11 @@ import { ISystem } from './System';
  * Manages a collection of systems in an ECS (Entity Component System) architecture.
  * Provides methods to add, remove, and retrieve systems.
  */
-export class SystemManager {
+export class SystemManager<TEntity> {
   /**
    * Internal list of systems managed by the SystemManager.
    */
-  private _systems: ISystem[] = [];
+  private _systems: ISystem<TEntity>[] = [];
 
   /**
    * Retrieves the list of systems currently managed.
@@ -22,7 +22,7 @@ export class SystemManager {
    * 
    * @param system - The system to be added.
    */
-  addSystem(system: ISystem) {
+  addSystem(system: ISystem<TEntity>) {
     if (!this._systems.includes(system)) {
       this._systems.push(system);
     }
@@ -33,7 +33,7 @@ export class SystemManager {
    * 
    * @param system - The system to be removed.
    */
-  removeSystem(system: ISystem) {
+  removeSystem(system: ISystem<TEntity>) {
     this._systems = this._systems.filter(s => s !== system);
   }
 }

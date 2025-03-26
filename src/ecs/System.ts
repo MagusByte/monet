@@ -3,7 +3,7 @@ import { IComponentFactory } from "./IComponentFactory";
 /**
  * Interface representing a system in the ECS (Entity-Component-System) architecture.
  */
-export interface ISystem {
+export interface ISystem<TEntity> {
 }
 
 /**
@@ -13,7 +13,7 @@ export interface ISystem {
  * @template TComponent - The type of the component managed by the system.
  * @template TEntity - The type of the entity associated with the component.
  */
-export class System<TComponent, TEntity> implements ISystem {
+export class System<TComponent, TEntity> implements ISystem<TEntity> {
   /**
    * List of component registrations, each associating an entity with a component.
    */
