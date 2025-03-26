@@ -1,6 +1,7 @@
-import { ITreeEntityManager, TreeEntityManager } from './TreeEntityManager';
+import { IEntityManager } from "./IEntityManager";
+import { ITreeEntityManager } from "./ITreeEntityManager";
+import { TreeEntityManager } from "./TreeEntityManager";
 import { TreeNode } from '../graph/TreeNode';
-import { IEntityManager } from './EntityManager';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { modify } from '../graph/modify';
 
