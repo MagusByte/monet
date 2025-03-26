@@ -14,17 +14,16 @@ export class Circle2d {
     public y: number,
     public radius: number) { }
 
-    /**
-     * Determines if a given point is inside the circle.
-     * 
-     * @param x - The x-coordinate of the point.
-     * @param y - The y-coordinate of the point.
-     * @returns True if the point is inside the circle, otherwise false.
-     */
-    isInside(x: number, y: number): boolean {
-      const dx = x - this.x;
-      const dy = y - this.y;
-      return (dx * dx + dy * dy) <= (this.radius * this.radius);
-    }
-  
+  /**
+   * Determines if a given point is inside the circle.
+   * 
+   * @param x - The x-coordinate of the point.
+   * @param y - The y-coordinate of the point.
+   * @returns True if the point is inside the circle, otherwise false.
+   */
+  isInside(x: number, y: number): boolean {
+    const dx = x - this.x;
+    const dy = y - this.y;
+    return (dx * dx + dy * dy) <= (this.radius * this.radius);
+  }
 }
