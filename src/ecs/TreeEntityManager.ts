@@ -1,11 +1,11 @@
-import { EntityEventMap, EventHandler, IEntityManager } from './EntityManager';
 import { TreeNode } from '../graph/TreeNode';
 import { query } from '../graph/query';
 import { modify } from '../graph/modify';
+import { EntityEventMap, EventHandler } from './EntityManagerEvents';
+import { IEntityManager } from './IEntityManager';
+import { ITreeEntityManager } from './ITreeEntityManager';
 
-export interface ITreeEntityManager<TEntity> extends IEntityManager<TreeNode<TEntity>> {
-  getRootNodes(): TreeNode<TEntity>[];
-}
+
 
 export class TreeEntityManager<TEntity> implements ITreeEntityManager<TEntity> {
   constructor(
