@@ -4,6 +4,20 @@ import { IComponentFactory } from "./IComponentFactory";
  * Interface representing a system in the ECS (Entity-Component-System) architecture.
  */
 export interface ISystem<TEntity> {
+  /**
+  * Removes the component associated with the specified entity.
+  *
+  * @param entity - The entity whose component will be removed.
+  */
+  removeFrom(entity: TEntity): void;
+
+  /**
+   * Checks if the specified entity has an associated component.
+   *
+   * @param entity - The entity to check.
+   * @returns `true` if the entity has a component, otherwise `false`.
+   */
+  has(entity: TEntity): boolean;
 }
 
 /**
@@ -44,11 +58,7 @@ export class System<TComponent, TEntity> implements ISystem<TEntity> {
     return component;
   }
 
-  /**
-   * Removes the component associated with the specified entity.
-   *
-   * @param entity - The entity whose component will be removed.
-   */
+  /** @inheritdoc */
   removeFrom(entity: TEntity): void {
     const registration = this.registrations.find(reg => reg.entity === entity);
     if (registration) {
@@ -68,12 +78,7 @@ export class System<TComponent, TEntity> implements ISystem<TEntity> {
     return registration?.component;
   }
 
-  /**
-   * Checks if the specified entity has an associated component.
-   *
-   * @param entity - The entity to check.
-   * @returns `true` if the entity has a component, otherwise `false`.
-   */
+  /** @inheritdoc */
   has(entity: TEntity): boolean {
     return this.registrations.some(reg => reg.entity === entity);
   }
